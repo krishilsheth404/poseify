@@ -22,6 +22,7 @@ app.post('/', (req, res) => {
 });
 
 app.post('/result', async(req, res) => {
+    console.log("Ready bouyy!!")
     // Insert Login Code Here
     const nameOfMed = req.body.dataOfMed + '\n';
 
