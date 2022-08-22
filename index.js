@@ -24,10 +24,12 @@ app.post('/', (req, res) => {
 app.post('/result', async(req, res) => {
     console.log("Ready bouyy!!")
     // Insert Login Code Here
-    const nameOfMed = req.body.dataOfMed + '\n';
-
+    const pul = req.body.pul + '\n';
+    const dol = req.body.dol + '\n';
+    const city = req.body.city + '\n';
+    
     var final;
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: true});
  
     async function dunzo() {
         const page = await browser.newPage();
@@ -41,7 +43,7 @@ app.post('/result', async(req, res) => {
 
         try {
             await page.waitForSelector('.bIlSir')
-            await page.type('.bIlSir', '400026')
+            await page.type('.bIlSir', pul)
 
             await page.waitForSelector('.hqIdmi')
             await page.click('.hqIdmi')
@@ -65,7 +67,7 @@ app.post('/result', async(req, res) => {
         await page.click('.lfHqJN > .hEolHO')
 
         await page.waitForSelector('.sc-1pv5wjx-2')
-        await page.type('.sc-1pv5wjx-2', '400004')
+        await page.type('.sc-1pv5wjx-2', dol)
 
         await page.waitForSelector('.hqIdmi')
         await page.click('.hqIdmi')
@@ -101,20 +103,20 @@ app.post('/result', async(req, res) => {
         await page1.click('.MuiSelect-root')
         console.log("connected...")
        
-        await page1.waitForSelector('.MuiMenu-list>li[data-value=mumbai]')
-        await page1.click('.MuiMenu-list>li[data-value=mumbai]')
+        await page1.waitForSelector(`.MuiMenu-list>li[data-value=${city}]`)
+        await page1.click(`.MuiMenu-list>li[data-value=${city}]`)
 
 
             await page1.keyboard.press('Tab');
             // await page.waitForSelector('input[type=text]')
-            await page1.type('input[type=text]', '400027')
+            await page1.type('input[type=text]', pul)
             await page1.waitForTimeout(1000);
 
             await page1.keyboard.press('ArrowDown');
 
             await page1.keyboard.press('Tab');
             
-            await page1.type('input[placeholder="Enter DropOff Address"]', '400004')
+            await page1.type('input[placeholder="Enter DropOff Address"]', dol)
             await page1.waitForTimeout(1000);
             
             await page1.keyboard.press('ArrowDown');
