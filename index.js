@@ -26,6 +26,7 @@ app.post('/result', async (req, res) => {
     const url = `https://www.bigbasket.com/ps/?q=${nameOfFruit}`
     const url1 = `https://www.starquik.com/search/${nameOfFruit}`
     console.log(url)
+    console.log(url1)
 
     var final=[];
     const browser = await puppeteer.launch({
@@ -33,11 +34,13 @@ app.post('/result', async (req, res) => {
            '--no-sandbox',
            '--disable-setuid-sandbox',
         ]
-});;
-
+    });;
+    
     async function bigbasket() {
+        try{
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
+        console.log(url)
 
         console.log('started for bigbasket')
 
@@ -46,10 +49,16 @@ app.post('/result', async (req, res) => {
         final.push({name:value});
         console.log("Bigbasket - > "+value);
         await page.close();
+        }catch(e)
+        {
+            console.log(e)
+        }
     }
     async function starquik(){
+        try{
         const page = await browser.newPage();
         await page.goto(url1, { waitUntil: 'networkidle2' });
+        console.log(url1)
         
         console.log('started for starquick')
         
@@ -60,6 +69,10 @@ app.post('/result', async (req, res) => {
     value += await page.evaluate(el => el.textContent, item)
  final.push({name:value});
     console.log("StarQuick - > "+value);
+        }catch(e)
+        {
+            console.log(e)
+        }
     }
 
 
