@@ -80,7 +80,7 @@ app.post('/result', async (req, res) => {
                 const $ = cheerio.load(data);
             // var n=$('.prod-name >a').first().text() +' '
             // n+= $('.qnty-selection div span').first().text();
-            console.log($.html());
+            // console.log($.html());
             return{
                 title:'StarQuick',
                 name:$('.product-title').first().text(),
@@ -106,7 +106,7 @@ app.post('/result', async (req, res) => {
                 // await page.close();
                 // Using cheerio to extract <a> tags
                 const $ = cheerio.load(data);
-            console.log($.html());
+            // console.log($.html());
             return{
                 title:'Jiomart',
                 name:$('.clsgetname').first().text(),
@@ -118,11 +118,11 @@ app.post('/result', async (req, res) => {
         }
     };
    
-    promise1 = final.push(await bigbasket(urlForBB));
-    promise2= final.push(await jiomart(urlForJiomart));
-    promise3 = final.push(await starquik(urlForStar));
+     final.push(await bigbasket(urlForBB));
+    final.push(await jiomart(urlForJiomart));
+    final.push(await starquik(urlForStar));
     
-    await Promise.all([promise1,promise2,promise3])
+    // await Promise.all([promise1,promise2,promise3])
     console.log(final);
     res.render('final', { final: final });
     await browser.close();
