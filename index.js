@@ -27,7 +27,12 @@ app.post('/result', async (req, res) => {
     const url1 = `https://www.starquik.com/search/${nameOfFruit}`
 
     var final=[];
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+             args : [ 
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+             ]
+});;
 
     async function bigbasket() {
         const page = await browser.newPage();
