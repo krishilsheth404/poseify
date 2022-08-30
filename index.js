@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer')
 const express = require('express'); // Include ExpressJS
 const app = express(); // Create an ExpressJS app
 const bodyParser = require('body-parser'); // Middleware 
+const cheerio=require('cheerio');
 const fs = require('fs');
 const ejs = require("ejs");
 
@@ -23,10 +24,9 @@ app.post('/', (req, res) => {
 app.post('/result', async (req, res) => {
     // Insert Login Code Here
     const nameOfFruit = req.body.foodItem + '\n';
-    const url = `https://www.bigbasket.com/ps/?q=${nameOfFruit}`
-    const url1 = `https://www.starquik.com/search/${nameOfFruit}`
-    console.log(url)
-    console.log(url1)
+    const urlForBB = `https://www.bigbasket.com/ps/?q=${nameOfFruit}`
+    const urlForStar = `https://www.starquik.com/search/${nameOfFruit}`
+    const urlForJiomart=`https://www.jiomart.com/catalogsearch/result?q=${nameOfFruit}`;
 
     var final=[];
     const browser = await puppeteer.launch({
@@ -36,50 +36,93 @@ app.post('/result', async (req, res) => {
         ]
     });;
     
-    async function bigbasket() {
-        try{
-        const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle2' });
-        console.log(url)
+    async function bigbasket(url) {
+        try {
+            // Fetching HTML
+            console.log(url);
 
-        console.log('started for bigbasket')
-
-        const item = await page.$('.item:nth-child(1)')
-        let value = await page.evaluate(el => el.textContent, item)
-        final.push({name:value});
-        console.log("Bigbasket - > "+value);
-        await page.close();
-        }catch(e)
-        {
-            console.log(e)
+             const page = await browser.newPage();
+                await page.goto(url, { waitUntil: 'networkidle2' });
+                const data = await page.evaluate(() => document.querySelector('*').outerHTML);
+                console.log("got the link for zomato");
+                // await browser.close();
+                // console.log(data)
+                // await page.close();
+                // Using cheerio to extract <a> tags
+                const $ = cheerio.load(data);
+            var n=$('.prod-name >a').first().text() +' '
+            n+= $('.qnty-selection div span').first().text();
+            // console.log($.html());
+            return{
+                title:'BigBasket',
+                name:n,
+                price:$('.discnt-price').first().text(),
+            }
+            
+        } catch (error) {
+            // res.sendFile(__dirname + '/try.html');
+            console.log(error);
         }
     }
-    async function starquik(){
-        try{
-        const page = await browser.newPage();
-        await page.goto(url1, { waitUntil: 'networkidle2' });
-        console.log(url1)
-        
-        console.log('started for starquick')
-        
-        var item = await page.$('.cat-items div:nth-child(1) .product-title')
-        value = await page.evaluate(el => el.textContent, item)
+    async function starquik(url){
+        try {
+            // Fetching HTML
+            console.log(url);
 
-    item = await page.$('.cat-items div:nth-child(1) .offer_price')
-    value += await page.evaluate(el => el.textContent, item)
- final.push({name:value});
-    console.log("StarQuick - > "+value);
-        }catch(e)
-        {
-            console.log(e)
+             const page = await browser.newPage();
+                await page.goto(url, { waitUntil: 'networkidle2' });
+                const data = await page.evaluate(() => document.querySelector('*').outerHTML);
+                console.log("got the link for zomato");
+                // await browser.close();
+                // console.log(data)
+                // await page.close();
+                // Using cheerio to extract <a> tags
+                const $ = cheerio.load(data);
+            // var n=$('.prod-name >a').first().text() +' '
+            // n+= $('.qnty-selection div span').first().text();
+            console.log($.html());
+            return{
+                title:'StarQuick',
+                name:$('.product-title').first().text(),
+                price:$('.offer_price').first().text(),
+            }
+            
+        } catch (error) {
+            // res.sendFile(__dirname + '/try.html');
+            console.log(error);
         }
     }
+    async function jiomart(url){
+        try {
+            // Fetching HTML
+            console.log(url);
 
-
-    promise1 = bigbasket();
-    promise2 = starquik();
-
-    await Promise.all([promise1, promise2])
+             const page = await browser.newPage();
+                await page.goto(url, { waitUntil: 'networkidle2' });
+                const data = await page.evaluate(() => document.querySelector('*').outerHTML);
+                console.log("got the link for jiomart");
+                await page.close();
+                // console.log(data)
+                // await page.close();
+                // Using cheerio to extract <a> tags
+                const $ = cheerio.load(data);
+            console.log($.html());
+            return{
+                title:'Jiomart',
+                name:$('.clsgetname').first().text(),
+                price:$('#final_price').first().text(),
+            }
+        } catch (error) {
+            // res.sendFile(__dirname + '/try.html');
+            console.log(error);
+        }
+    };
+   
+    promise1 = final.push(await bigbasket(urlForBB));
+    promise2= final.push(await jiomart(urlForJiomart));
+    promise3 = final.push(await starquik(urlForStar));
+    
+    await Promise.all([promise1,promise2,promise3])
     console.log(final);
     res.render('final', { final: final });
     await browser.close();
