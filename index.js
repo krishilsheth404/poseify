@@ -3,16 +3,10 @@ const puppeteer = require('puppeteer')
 const express = require('express'); // Include ExpressJS
 const app = express(); // Create an ExpressJS app
 const bodyParser = require('body-parser'); // Middleware 
-const axios = require('axios')
-const path = require('path');
-const cheerio = require('cheerio')
-const request = require('request');
 const fs = require('fs');
 const ejs = require("ejs");
 const { AddressContext } = require('twilio/lib/rest/api/v2010/account/address');
 const { getElementsByTagType } = require('domutils');
-url = 'https://www.bigbasket.com/ps/?q=dragonfruit'
-url1 = 'https://www.starquik.com/search/dragon%20fruit'
 
 app.set('view engine', 'ejs');
 // app.set('views', './');
@@ -30,7 +24,9 @@ app.post('/', (req, res) => {
 
 app.post('/result', async (req, res) => {
     // Insert Login Code Here
-    const nameOfMed = req.body.dataOfMed + '\n';
+    const nameOfFruit = req.body.dataOfMed + '\n';
+    const url = `https://www.bigbasket.com/ps/?q=${nameOfFruit}`
+    const url1 = `https://www.starquik.com/search/${nameOfFruit}`
 
     var final=[];
     const browser = await puppeteer.launch({ headless: false });
