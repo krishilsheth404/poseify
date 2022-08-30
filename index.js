@@ -32,7 +32,7 @@ app.post('/result', async (req, res) => {
     // Insert Login Code Here
     const nameOfMed = req.body.dataOfMed + '\n';
 
-    var final;
+    var final=[];
     const browser = await puppeteer.launch({ headless: false });
 
     async function bigbasket() {
@@ -43,7 +43,7 @@ app.post('/result', async (req, res) => {
 
         const item = await page.$('.item:nth-child(1)')
         let value = await page.evaluate(el => el.textContent, item)
-        final.push(value)
+        final.push({name:value});
         console.log("Bigbasket - > "+value);
         await page.close();
     }
@@ -55,12 +55,10 @@ app.post('/result', async (req, res) => {
         
         var item = await page.$('.cat-items div:nth-child(1) .product-title')
         value = await page.evaluate(el => el.textContent, item)
-        final.push(value)
 
     item = await page.$('.cat-items div:nth-child(1) .offer_price')
     value += await page.evaluate(el => el.textContent, item)
-
-
+ final.push({name:value});
     console.log("StarQuick - > "+value);
     }
 
@@ -69,6 +67,7 @@ app.post('/result', async (req, res) => {
     promise2 = starquik();
 
     await Promise.all([promise1, promise2])
+    console.log(final);
     res.render('final', { final: final });
     await browser.close();
 });
