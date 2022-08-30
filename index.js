@@ -4,7 +4,9 @@ const express = require('express'); // Include ExpressJS
 const app = express(); // Create an ExpressJS app
 const bodyParser = require('body-parser'); // Middleware 
 const fs = require('fs');
-const ejs=require('ejs');
+const ejs = require("ejs");
+const { AddressContext } = require('twilio/lib/rest/api/v2010/account/address');
+const { getElementsByTagType } = require('domutils');
 
 app.set('view engine', 'ejs');
 // app.set('views', './');
@@ -22,16 +24,17 @@ app.post('/', (req, res) => {
 
 app.post('/result', async (req, res) => {
     // Insert Login Code Here
-    const nameOfFruit = req.body.dataOfMed + '\n';
+    const nameOfFruit = req.body.foodItem + '\n';
     const url = `https://www.bigbasket.com/ps/?q=${nameOfFruit}`
     const url1 = `https://www.starquik.com/search/${nameOfFruit}`
+    console.log(url)
 
     var final=[];
     const browser = await puppeteer.launch({
-             args : [ 
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-             ]
+        args : [ 
+           '--no-sandbox',
+           '--disable-setuid-sandbox',
+        ]
 });;
 
     async function bigbasket() {
