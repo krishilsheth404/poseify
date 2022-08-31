@@ -30,18 +30,18 @@ app.post('/result', async (req, res) => {
     const urlForKimaye=`https://kimaye.com/search?q=${nameOfFruit}&type=product`;
 
     var final=[];
-    const browser = await puppeteer.launch({
-        args : [ 
-           '--no-sandbox',
-           '--disable-setuid-sandbox',
-        ]
-    });;
+   
     
     async function bigbasket(url) {
         try {
             // Fetching HTML
             console.log(url);
-
+            const browser = await puppeteer.launch({
+                args : [ 
+                   '--no-sandbox',
+                   '--disable-setuid-sandbox',
+                ]
+            });;
              const page = await browser.newPage();
                 await page.goto(url, { waitUntil: 'networkidle2' });
                 const data = await page.evaluate(() => document.querySelector('*').outerHTML);
@@ -54,9 +54,10 @@ app.post('/result', async (req, res) => {
             var n=$('.prod-name >a').first().text() +' '
             n+= $('.qnty-selection div span').first().text();
             // console.log($.html());
+            await browser.close();
             return{
-                title:'BigBasket',
-                name:n,
+                name:'BigBasket',
+                item:n,
                 price:$('.discnt-price').first().text(),
             }
             
@@ -69,24 +70,37 @@ app.post('/result', async (req, res) => {
         try {
             // Fetching HTML
             console.log(url);
-
+            const browser = await puppeteer.launch({
+                args : [ 
+                   '--no-sandbox',
+                   '--disable-setuid-sandbox',
+                ]
+            });;
              const page = await browser.newPage();
                 await page.goto(url, { waitUntil: 'networkidle2' });
-                
                 const data = await page.evaluate(() => document.querySelector('*').outerHTML);
-                console.log("got the data from starquick");
+
+                let name=await page.waitForSelector('.product-title');
+                name=await page.evaluate(el => el.textContent, name);
+            //   console.log(name);
+              
+              let price=await page.waitForSelector('.offer_price');
+                price=await page.evaluate(el => el.textContent, price);
+
+                //.product-img for image of product 
+
+                // console.log("got the link for zomato");
                 // await browser.close();
                 // console.log(data)
-                // await page.close();
                 // Using cheerio to extract <a> tags
-                const $ = cheerio.load(data);
-            // var n=$('.prod-name >a').first().text() +' '
-            // n+= $('.qnty-selection div span').first().text();
-            // console.log($.html());
+                // var n=$('.prod-name >a').first().text() +' '
+                // n+= $('.qnty-selection div span').first().text();
+                // console.log($.html());
+                await browser.close();
             return{
-                title:'StarQuick',
-                name:$('.product-title').first().text(),
-                price:$('.offer_price').first().text(),
+                name:'StarQuick',
+                item:name,
+                price:price,
             }
             
         } catch (error) {
@@ -98,6 +112,12 @@ app.post('/result', async (req, res) => {
         try {
             // Fetching HTML
             console.log(url);
+            const browser = await puppeteer.launch({
+                args : [ 
+                   '--no-sandbox',
+                   '--disable-setuid-sandbox',
+                ]
+            });;
 
              const page = await browser.newPage();
                 await page.goto(url, { waitUntil: 'networkidle2' });
@@ -111,10 +131,10 @@ app.post('/result', async (req, res) => {
                 price=await page.evaluate(el => el.textContent, price);
 
               
-                await page.close();
+                await browser.close();
             return{
-                title:'jioMart',
-                name:name,
+                name:'jioMart',
+                item:name,
                 price:price,
             }
             
@@ -128,7 +148,12 @@ app.post('/result', async (req, res) => {
         try {
             // Fetching HTML
             console.log(url);
-            
+            const browser = await puppeteer.launch({
+                args : [ 
+                   '--no-sandbox',
+                   '--disable-setuid-sandbox',
+                ]
+            });;
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle2' });
             const data = await page.evaluate(() => document.querySelector('*').outerHTML);
@@ -140,10 +165,10 @@ app.post('/result', async (req, res) => {
             // var n=$('.prod-name >a').first().text() +' '
                 // n+= $('.qnty-selection div span').first().text();
                 // console.log($.html());
-                // await page.close();
+                // await broqwer.close();
             return{
-                title:'Kimaye',
-                name:$('.product-title').first().text(),
+                name:'Kimaye',
+                item:$('.product-title').first().text(),
                 price:$('.price-Mumbai').first().text(),
             }
             
@@ -156,7 +181,7 @@ app.post('/result', async (req, res) => {
     const promise2=await jiomart(urlForJiomart);
     const promise3=await starquik(urlForStar);
     const promise4=await kimaye(urlForKimaye);
-    await Promise.all([promise1, promise2, promise3,promise4]).then((values,index) => {
+    await Promise.all([promise1, promise2, promise3,promise4]).then((values) => {
         final.push(values[0]);
         final.push(values[1]);
         final.push(values[2]);
@@ -171,7 +196,6 @@ app.post('/result', async (req, res) => {
     
     console.log(final);
     res.render('final', { final: final });
-    await browser.close();
 });
 
 const port = process.env.PORT || 5000 // Port we will listen on
