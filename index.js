@@ -27,6 +27,7 @@ app.post('/result', async (req, res) => {
     const urlForBB = `https://www.bigbasket.com/ps/?q=${nameOfFruit}`
     const urlForStar = `https://www.starquik.com/search/${nameOfFruit}`
     const urlForJiomart=`https://www.jiomart.com/catalogsearch/result?q=${nameOfFruit}`;
+    const urlForKimaye=`https://kimaye.com/search?q=${nameOfFruit}&type=product`;
 
     var final=[];
     const browser = await puppeteer.launch({
@@ -44,7 +45,7 @@ app.post('/result', async (req, res) => {
              const page = await browser.newPage();
                 await page.goto(url, { waitUntil: 'networkidle2' });
                 const data = await page.evaluate(() => document.querySelector('*').outerHTML);
-                console.log("got the link for zomato");
+                console.log("got the data from bigbasket");
                 // await browser.close();
                 // console.log(data)
                 // await page.close();
@@ -71,8 +72,9 @@ app.post('/result', async (req, res) => {
 
              const page = await browser.newPage();
                 await page.goto(url, { waitUntil: 'networkidle2' });
+                
                 const data = await page.evaluate(() => document.querySelector('*').outerHTML);
-                console.log("got the link for zomato");
+                console.log("got the data from starquick");
                 // await browser.close();
                 // console.log(data)
                 // await page.close();
@@ -98,31 +100,71 @@ app.post('/result', async (req, res) => {
             console.log(url);
 
              const page = await browser.newPage();
-                await page.goto(url, { waitUntil: 'networkidle2' });
-                const data = await page.evaluate(() => document.querySelector('*').outerHTML);
-                console.log("got the link for jiomart");
-                await page.close();
-                // console.log(data)
+             await page.goto(url, { waitUntil: 'networkidle2' });
+             const data = await page.evaluate(() => document.querySelector('*').outerHTML);
+             console.log("got the data from jiomart");
+             // await page.close();
+             // console.log(data)
+             // await page.close();
+             // Using cheerio to extract <a> tags
+             const $ = cheerio.load(data);
+             // console.log($.html());
+             return{
+                 title:'Jiomart',
+                 name:$('.clsgetname').first().text(),
+                 price:$('#final_price').first().text(),
+                }
+            } catch (error) {
+                // res.sendFile(__dirname + '/try.html');
+            console.log(error);
+        }
+    };
+    async function kimaye(url)
+    {
+        try {
+            // Fetching HTML
+            console.log(url);
+            
+            const page = await browser.newPage();
+            await page.goto(url, { waitUntil: 'networkidle2' });
+            const data = await page.evaluate(() => document.querySelector('*').outerHTML);
+            console.log("got the data from kimaye");
+            // await browser.close();
+            // console.log(data)
+            // Using cheerio to extract <a> tags
+            const $ = cheerio.load(data);
+            // var n=$('.prod-name >a').first().text() +' '
+                // n+= $('.qnty-selection div span').first().text();
+                // console.log($.html());
                 // await page.close();
-                // Using cheerio to extract <a> tags
-                const $ = cheerio.load(data);
-            // console.log($.html());
             return{
-                title:'Jiomart',
-                name:$('.clsgetname').first().text(),
-                price:$('#final_price').first().text(),
+                title:'Kimaye',
+                name:$('.product-title').first().text(),
+                price:$('.price-Mumbai').first().text(),
             }
+            
         } catch (error) {
             // res.sendFile(__dirname + '/try.html');
             console.log(error);
         }
-    };
-   
-     final.push(await bigbasket(urlForBB));
-    final.push(await jiomart(urlForJiomart));
-    final.push(await starquik(urlForStar));
+    }
+    const promise1=await bigbasket(urlForBB);
+    const promise2=await jiomart(urlForJiomart);
+    const promise3=await starquik(urlForStar);
+    const promise4=await kimaye(urlForKimaye);
+    await Promise.all([promise1, promise2, promise3,promise4]).then((values,index) => {
+        final.push(values[0]);
+        final.push(values[1]);
+        final.push(values[2]);
+        final.push(values[3]);
+      });
     
-    // await Promise.all([promise1,promise2,promise3])
+    // await Promise.all([final.push(await bigbasket(urlForBB)),final.push(await jiomart(urlForJiomart)),
+    //     final.push(await starquik(urlForStar)),final.push(await kimaye(urlForKimaye))])
+    
+    //     await Promise.all([final.push(await bigbasket(urlForBB)),final.push(await jiomart(urlForJiomart)),
+    //     final.push(await starquik(urlForStar)),final.push(await kimaye(urlForKimaye))])
+    
     console.log(final);
     res.render('final', { final: final });
     await browser.close();
