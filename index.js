@@ -108,7 +108,7 @@ app.post('/result', async (req, res) => {
              // await page.close();
              // Using cheerio to extract <a> tags
              const $ = cheerio.load(data);
-             // console.log($.html());
+             console.log($.html());
              return{
                  title:'Jiomart',
                  name:$('.clsgetname').first().text(),
