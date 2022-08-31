@@ -98,24 +98,29 @@ app.post('/result', async (req, res) => {
         try {
             // Fetching HTML
             console.log(url);
+            const browser = await puppeteer.launch({ headless: false });
 
              const page = await browser.newPage();
-             await page.goto(url, { waitUntil: 'networkidle2' });
-             const data = await page.evaluate(() => document.querySelector('*').outerHTML);
-             console.log("got the data from jiomart");
-             // await page.close();
-             // console.log(data)
-             // await page.close();
-             // Using cheerio to extract <a> tags
-             const $ = cheerio.load(data);
-             console.log($.html());
-             return{
-                 title:'Jiomart',
-                 name:$('.clsgetname').first().text(),
-                 price:$('#final_price').first().text(),
-                }
-            } catch (error) {
-                // res.sendFile(__dirname + '/try.html');
+                await page.goto(url, { waitUntil: 'networkidle2' });
+                const data = await page.evaluate(() => document.querySelector('*').outerHTML);
+
+                let name=await page.waitForSelector('.clsgetname');
+                name=await page.evaluate(el => el.textContent, name);
+            //   console.log(name);
+              
+              let price=await page.waitForSelector('#final_price');
+                price=await page.evaluate(el => el.textContent, price);
+
+              
+                await page.close();
+            return{
+                title:'jioMart',
+                name:name,
+                price:price,
+            }
+            
+        } catch (error) {
+            // res.sendFile(__dirname + '/try.html');
             console.log(error);
         }
     };
