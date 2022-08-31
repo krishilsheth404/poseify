@@ -106,7 +106,6 @@ app.post('/result', async (req, res) => {
         try {
             // Fetching HTML
             console.log(url);
-            const browser = await puppeteer.launch({ headless: false });
 
              const page = await browser.newPage();
                 await page.goto(url, { waitUntil: 'networkidle2' });
