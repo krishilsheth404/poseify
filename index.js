@@ -3,8 +3,7 @@ const puppeteer = require('puppeteer')
 const express = require('express'); // Include ExpressJS
 const app = express(); // Create an ExpressJS app
 const bodyParser = require('body-parser'); // Middleware 
-const cheerio=require('cheerio');
-const { raw } = require('body-parser');
+
 var urlForZomato = `https://medicomp.herokuapp.com`;
         // urlForZomato = urlForZomato.split(' ').join('+')
 
@@ -13,11 +12,7 @@ app.set('view engine', 'ejs');
 
 var urlForSwiggy, urlForZomato;
 var extractLinksOfSwiggy, extractLinksOfZomato, matchedDishes = {};
-var matchedDishesForSwiggy, matchedDishesForZomato, tempAddress, discCodesForZomato, addr, linkOld = '';
-var z, s, w;
-var sdfd, tempurl, tempurl2;
-var Offers = 0;
-var final = [];
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // var newItem;
