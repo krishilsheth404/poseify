@@ -31,7 +31,7 @@ app.post('/result', async(req, res) => {
         args : [ 
             '--no-sandbox',
             '--disable-setuid-sandbox',
-         ]
+         ],headless:false
         
     });;
     extractLinksOfZomato = async(url) => {
@@ -40,18 +40,18 @@ app.post('/result', async(req, res) => {
             console.log(url);
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle2' });
-            await page.waitForSelector('#foodItem');
-            await page.$eval('#foodItem', el => el.value = 'Start');
+//             await page.waitForSelector('#foodItem');
+//             await page.$eval('#foodItem', el => el.value = 'Start');
 
-            await page.waitForSelector('#form-submit');
-            try{
-                await page.click('#form-submit');
-                console.log('clicked');
-            }catch(e){
-                 console.log('error');
-            }
+//             await page.waitForSelector('#form-submit');
+//             try{
+//                 await page.click('#form-submit');
+//                 console.log('clicked');
+//             }catch(e){
+//                  console.log('error');
+//             }
 
-            await page.waitForTimeout(1000);
+            await page.waitForTimeout(5000);
             // const data = await page.evaluate(() => document.querySelector('*').outerHTML);
             // console.log("got the data from bigbasket");
             // await browser.close();
