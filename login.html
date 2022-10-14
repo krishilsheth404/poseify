@@ -270,17 +270,7 @@
         <fieldset>
             <h2 class="fs-title">Enter the Fruit Name</h2>
             <h3 class="fs-subtitle">For Comparison</h3>
-            <select name="fav" id="fav">
-                <option value="Blueberry">Blueberry</option>
-                <option value="Avocado">Avocado</option>
-                <option value="Apple">Apple</option>
-                <option value="Grapes">Grapes</option>
-                <option value="Kiwi">Kiwi</option>
-                <option value="Custard Apple">Custard Apple</option>
-                <option value="Dragon Fruit">Dragon Fruit</option>
-                <option value="Plum">Plum</option>
-                <option value="Guava">Guava</option>
-            </select>
+            <input type="text" name="foodItem" placeholder="Fruit name" required id='foodItem' class='val4' autocomplete="off" />
 
             <!--<textarea name="address" placeholder="Address"></textarea>-->
             <p style="font-family: inherit;font-size: 14px;" id='dataTitle'></p>
@@ -306,7 +296,7 @@
         //     }
         // }
 
-        var z = 15;
+        var z = 30;
         // countdown();
 
 
@@ -400,10 +390,12 @@
         });
 
         function countdown() {
-            
+            if (document.getElementById('foodItem').value == '') {
+                alert('Enter The Details First!');
+            } else {
                 var e = setTimeout(countdown, 1000);
                 if (z == 0) {
-                    console.log("TIMEOUT OF 10s");
+                    console.log("TIMEOUT OF 15s");
                 }
                 if (z > 0) {
                     z--;
@@ -411,7 +403,7 @@
                 } else {
                     clearTimeout(e);
                 }
-            
+            }
         }
     </script>
     <script>
