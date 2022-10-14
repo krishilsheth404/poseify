@@ -4,7 +4,6 @@ const express = require('express'); // Include ExpressJS
 const app = express(); // Create an ExpressJS app
 const bodyParser = require('body-parser'); // Middleware 
 const cheerio=require('cheerio');
-const axios=require('axios');
 const fs = require('fs');
 const ejs = require("ejs");
 const { url } = require('inspector');
@@ -180,18 +179,16 @@ app.post('/result', async (req, res) => {
 
     var final=[];
    
-    await axios.all([bigbasket(urlForBB),jiomart(urlForJiomart),starquik(urlForStar),kimaye(urlForKimaye)])
-        .then(await axios.spread(async (...responses) => {
-            // console.log(...responses);
-
-            final.push(responses[0])
-            final.push(responses[1])
-            final.push(responses[2])
-            final.push(responses[3])
-           
-            // await extractSubsfApollo(final[final.length-1].link,final);
-
-        }))
+    const promise1=bigbasket(urlForBB);
+    const promise2=starquik(urlForStar);
+    const promise3=jiomart(urlForJiomart);
+    const promise4=kimaye(urlForKimaye);
+    await Promise.all([promise1, promise2, promise3,promise4]).then((values) => {
+        final.push(values[0])
+        final.push(values[1])
+        final.push(values[2])
+        final.push(values[3])
+      });
     
     // await Promise.all([final.push(await bigbasket(urlForBB)),final.push(await jiomart(urlForJiomart)),
     //     final.push(await starquik(urlForStar)),final.push(await kimaye(urlForKimaye))])
