@@ -142,9 +142,14 @@
                     alt="GOOGLE.COM">
                 </a>
             </div>
+            
+            <div class="words" contenteditable>
+                <p id="p"></p>
+            </div>
+
             <div class="out">
-                <form action="/result" method="POST">
-                    <input type="text" autocomplete="off" name="search" id="search" placeholder="SEARCH ANYTHING...">
+                <form action="/result" method="POST" id="msform">
+                    <input type="text" autocomplete="off" name="search" id="search" placeholder="SEARCH ANYTHING..." x-webkit-speech>
                 </form>
             </div>
             <div class="box">
@@ -230,6 +235,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+        var speech = true;
+        window.SpeechRecognition = window.SpeechRecognition
+                        || window.webkitSpeechRecognition;
+  
+        const recognition = new SpeechRecognition();
+        recognition.interimResults = true;
+        const words = document.querySelector('#search');
+        
+        recognition.addEventListener('result', e => {
+            const transcript = Array.from(e.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('')
+            
+            // document.getElementById("p").innerHTML = transcript;
+            words.value=transcript;
+            console.log(transcript);
+        });
+          
+        if (speech == true) {
+            recognition.start();
+            recognition.addEventListener('end', recognition.start);
+        }
+        setTimeout(() => {
+            document.getElementById('msform').submit();
+        }, 4000);
+    </script>
 </body>
 
 </html>
