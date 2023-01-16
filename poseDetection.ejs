@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>POSEIFY</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free Website Template" name="keywords">
+    <meta content="Free Website Template" name="description">
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d/control_utils_3d.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<style>
+    .cont {
+        width: 250px;
+        height: 250px;
+        position: fixed;
+        text-align: center;
+        font-weight: bold;
+        display: none;
+        top: 50%;
+        left: 50%;
+        color: white;
+        transform: translate(-50%, -50%);
+        border: 2px solid #aaa;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 125px;
+        height: 100px;
+        transform-origin: 0 0;
+        background-image: linear-gradient(rgb(255, 255, 255), transparent);
+        animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(-360deg);
+        }
+    }
+
+    .number {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 2;
+        transform: translate(-50%, -50%);
+        width: 250px;
+        height: 250px;
+    }
+
+    .number::after {
+        content: '';
+        width: 250px;
+        height: 250px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 150px;
+        line-height: 250px;
+        animation: count 10s infinite steps(10, start);
+    }
+
+    @keyframes count {
+
+        0%,
+        100% {
+            content: '0';
+        }
+
+        10% {
+            content: '9';
+        }
+
+        20% {
+            content: '8';
+        }
+
+        30% {
+            content: '7';
+        }
+
+        40% {
+            content: '6';
+        }
+
+        50% {
+            content: '5';
+        }
+
+        60% {
+            content: '4';
+        }
+
+        70% {
+            content: '3';
+        }
+
+        80% {
+            content: '2';
+        }
+
+        90% {
+            content: '1';
+        }
+    }
+</style>
+
+<body>
+    <!-- Top Bar Start -->
+    <div class="top-bar d-none d-md-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="top-bar-left">
+                        <div class="text">
+                            <i class="far fa-clock"></i>
+                            <h2>8:00 - 9:00</h2>
+                            <p>Mon - Fri</p>
+                        </div>
+                        <div class="text">
+                            <i class="fa fa-phone-alt"></i>
+                            <h2>+123 456 7890</h2>
+                            <p>For Appointment</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="top-bar-right">
+                        <div class="social">
+                            <a href=""><i class="fab fa-twitter"></i></a>
+                            <a href=""><i class="fab fa-facebook-f"></i></a>
+                            <a href=""><i class="fab fa-linkedin-in"></i></a>
+                            <a href=""><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Top Bar End -->
+
+    <!-- Nav Bar Start -->
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a href="index.html" class="navbar-brand"><img src="Mediamodifier-Design-Template (1).png" alt="" style="width: 16rem;
+                  height: 6rem;
+                  filter: drop-shadow(0px 0px 0.5px #fff);
+                  max-height: 5rem;"></a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto">
+                    <a href="index.html" class="nav-item nav-link active">Home</a>
+
+                    <form action="/types" method="post">
+                        <a href="#" onclick="this.parentElement.submit();" class="nav-item nav-link">Class</a>
+                    </form>
+                    <a href="portfolio.html" class="nav-item nav-link">Pose</a>
+                    <!-- <div class="nav-item dropdown">
+                          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Blog</a>
+                          <div class="dropdown-menu">
+                              <a href="blog.html" class="dropdown-item">Blog Grid</a>
+                              <a href="single.html" class="dropdown-item">Blog Detail</a>
+                          </div>
+                      </div> -->
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Nav Bar End -->
+
+    <!-- Page Header Start -->
+    <div class="page-header">
+        <h2 id="asanaName">
+            <%=final[2]%>
+        </h2>
+        <div class="container">
+            <div class="row" style="position: relative;">
+
+
+                <video class="input_video" width="0px" height="0px"></video>
+                <canvas class="output_canvas" width="640px" height="360px" style="width:50%;"></canvas>
+                <img src="#" id="tryasana" alt="" style="width:48%;height: 360px;margin-left: 0px;margin-right: 0px;">
+                <div class="landmark-grid-container" style="display: none;"></div>
+
+                <div class="cont" id="counter">
+                    <div class="spinner"></div>
+                    <span class="number"></span>
+                    <!-- <img src="<%=final[1]%>" alt="Yoga Pose" style="width: 100%;height:auto;"> -->
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Single Post Start-->
+
+    <!-- Single Post End-->
+
+
+    <!-- Footer Start -->
+
+    <!-- Footer End -->
+
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <script type="module">
+        // console.log(final);
+        const videoElement = document.getElementsByClassName('input_video')[0];
+        const canvasElement = document.getElementsByClassName('output_canvas')[0];
+        const canvasCtx = canvasElement.getContext('2d');
+        const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
+        const grid = new LandmarkGrid(landmarkContainer);
+
+        function counterStart() {
+            document.getElementById('counter').style.display = 'block';
+        }
+        function counterEnd() {
+            document.getElementById('counter').style.display = 'none';
+        }
+        function poseDetect(canvasCtx, landmarks) {
+            // console.clear();
+            let checker = (arr, target) => target.every(v => arr.includes(v));
+
+            var asana =
+            {
+                "Big Toe Pose ( Padangusthasana )": ["HipsBend", "HandsTouchToe", "LegsStraight", "RightLegInsideShoulder", "LeftLegInsideShoulder"],
+                "Chair Pose To Left ( Utkatasana (OOT-kah-TAHS-ah-nah) )": ["KneesBend120", "RightHandStraightUp", "LeftHandStraightUp", "HipsBend", "RightLegOusideShoulder", "LeftLegInsideShoulder"],
+                "Chair Pose To Right ( Utkatasana (OOT-kah-TAHS-ah-nah) )": ["KneesBend120", "RightHandStraightUp", "LeftHandStraightUp", "HipsBend", "RightLegInsideShoulder", "LeftLegOutsideShoulder"],
+                "Dolphin Pose ( Ardha PinchaMayurasana )": ["HipsBend", "RightLegInsideShoulder", "LeftLegInsideShoulder"],
+                "Half Moon Pose ( Ardha Chandrasana (are-dah chan-DRAHS-anna) )": ["RightLegOutsideShoulder", "LeftLegOutsideShoulder", "Legs90AtMp", "RightHandStraight", "LeftHandStraight", "HipsBend"],
+                
+                
+                
+                "High Lunge ( Utthita Ashwa Sanchalanasana )": ["RightLegOutsideShoulder", "LeftLegOutsideShoulder", "KneesBend90", "RightHandStraightUp", "LeftHandStraightUp", "HipsBend"],
+                "Extended Side Angle Pose To Left ( Utthita Parsvakonasana (oo-TEE-tah Parsh-vah-cone-AHS-anna) )" : ["RightLegOutsideShoulder", "LeftLegOutsideShoulder", "HipsBend45", "KneesBend90","LeftHandStraightUp"],
+                "Extended Side Angle Pose To Right ( Utthita Parsvakonasana (oo-TEE-tah Parsh-vah-cone-AHS-anna) )": ["RightLegOutsideShoulder", "LeftLegOutsideShoulder", "HipsBend45", "KneesBend90","RightHandStraightUp"],
+                
+                "Warrior 2 Pose (  Virabhadrasana II (veer-ah-bah-DRAHS-anna) )": ["RightLegOutsideShoulder", "LeftLegOutsideShoulder", "HipsBend", "KneesBend90","LeftHandStraight","RightHandStraight"],
+                "Mountain Pose ( Tadasana (tah-DAHS-anna) )": ["RightLegInsideShoulder", "LeftLegInsideShoulder", "RightHandStraightDown", "LeftHandStraightDown","KneeNotBend"],
+                "Upward Salute ( Urdhva Hastasana (OORD-vah hahs-TAHS-ah-nah) )": ["RightLegInsideShoulder", "LeftLegInsideShoulder", "RightHandStraightUp", "LeftHandStraightUp","KneeNotBend"],
+                "Star Pose ( Utthita Tadasana )": ["RightLegOutsideShoulder", "LeftLegOutsideShoulder", "LeftHandStraight", "RightHandStraight","KneeNotBend"]
+            }
+
+            var asanaImg = {
+                "Big Toe Pose ( Padangusthasana )": "https://www.yogajournal.com/wp-content/uploads/2007/08/big-toe-pose-1.jpg",
+                "Chair Pose To Left ( Utkatasana (OOT-kah-TAHS-ah-nah) )": "https://www.yogajournal.com/wp-content/uploads/2021/11/Chair-Pose_Andrew-Clark_2400x1350.jpg?crop=16:9&width=1500",
+                "Chair Pose To Right ( Utkatasana (OOT-kah-TAHS-ah-nah) )": "https://www.yogajournal.com/wp-content/uploads/2021/11/Chair-Pose_Andrew-Clark_2400x1350.jpg?crop=16:9&width=1500",
+                "Dolphin Pose ( Ardha PinchaMayurasana )": "https://www.yogajournal.com/wp-content/uploads/2007/08/dolphin-pose_andrew-clark.jpg?crop=16:9&width=1500",
+                "Half Moon Pose ( Ardha Chandrasana (are-dah chan-DRAHS-anna) )": "https://www.yogajournal.com/wp-content/uploads/2007/08/Half-Moon-Pose_Andrew-Clark_2400x1350.jpeg?crop=16:9&width=1500",
+                
+                "High Lunge ( Utthita Ashwa Sanchalanasana )": "https://www.yogajournal.com/wp-content/uploads/2008/02/High-Lunge_Andrew-Clark.jpg?crop=16:9&width=1500",
+                "Extended Side Angle Pose To Left ( Utthita Parsvakonasana (oo-TEE-tah Parsh-vah-cone-AHS-anna) )": "https://www.yogajournal.com/wp-content/uploads/2021/11/Extended-Side-Angle-Pose_Andrew-Clark_2400x1350.jpeg?crop=16:9&width=1500",
+                "Extended Side Angle Pose To Right ( Utthita Parsvakonasana (oo-TEE-tah Parsh-vah-cone-AHS-anna) )": "https://www.yogajournal.com/wp-content/uploads/2021/11/Extended-Side-Angle-Pose_Andrew-Clark_2400x1350.jpeg?crop=16:9&width=1500",
+                
+                "Warrior 2 Pose (  Virabhadrasana II (veer-ah-bah-DRAHS-anna) )":"https://www.yogajournal.com/wp-content/uploads/2021/12/Warrior-2-Pose_Andrew-Clark_2400x1350.jpeg?crop=16:9&width=1500",
+                "Mountain Pose ( Tadasana (tah-DAHS-anna) )": "https://www.yogajournal.com/wp-content/uploads/2021/10/YJ_Mountain-Pose_Andrew-Clark_2400x1350.png?crop=16:9&width=1500",
+                "Upward Salute ( Urdhva Hastasana (OORD-vah hahs-TAHS-ah-nah) )": "https://www.yogajournal.com/wp-content/uploads/2008/02/Upward-Salute_Andrew-Clark.jpg?crop=535:301&width=1070&enable=upscale",
+                "Star Pose ( Utthita Tadasana )": "https://www.kalimukti.com/uploads/53b9ff2c4e89f2e76d46a61edae3531a",
+            }
+           
+            var leftWristx = Math.abs(landmarks[16].x * 100);
+            var leftWristy = Math.abs(landmarks[16].y * 100);
+            var rightWristx = Math.abs(landmarks[15].x * 100);
+            var rightWristy = Math.abs(landmarks[15].y * 100);
+
+
+            var leftElbowx = Math.abs(landmarks[14].x * 100);
+            var leftElbowy = Math.abs(landmarks[14].y * 100);
+            var rightElbowx = Math.abs(landmarks[13].x * 100);
+            var rightElbowy = Math.abs(landmarks[13].y * 100);
+
+            var leftKneex = Math.abs(landmarks[25].x * 100);
+            var leftKneey = Math.abs(landmarks[25].y * 100);
+            var rightKneex = Math.abs(landmarks[26].x * 100);
+            var rightKneey = Math.abs(landmarks[26].y * 100);
+
+            var leftHipx = Math.abs(landmarks[23].x * 100);
+            var leftHipy = Math.abs(landmarks[23].y * 100);
+            var rightHipx = Math.abs(landmarks[24].x * 100);
+            var rightHipy = Math.abs(landmarks[24].y * 100);
+
+
+            var leftToex = Math.abs(landmarks[32].x * 100);
+            var leftToey = Math.abs(landmarks[32].y * 100);
+            var rightToex = Math.abs(landmarks[31].x * 100);
+            var rightToey = Math.abs(landmarks[31].y * 100);
+            var leftAnklex = Math.abs(landmarks[30].x * 100);
+            var leftAnkley = Math.abs(landmarks[30].y * 100);
+            var rightAnklex = Math.abs(landmarks[29].x * 100);
+            var rightAnkley = Math.abs(landmarks[29].y * 100);//leg co-ordinates
+
+            var leftShoulderx = Math.abs(landmarks[12].x * 100);
+            var leftShouldery = Math.abs(landmarks[12].y * 100);
+            var rightShoulderx = Math.abs(landmarks[11].x * 100);
+            var rightShouldery = Math.abs(landmarks[11].y * 100);
+            var rh = 0, lh = 0, l = 0;
+
+
+
+            var lla, llb, llc;
+            var rla, rlb, rlc;
+            lla = (Math.sqrt(Math.pow(Math.abs(landmarks[23].x - landmarks[25].x), 2) + Math.pow(Math.abs(landmarks[23].y - landmarks[25].y), 2)));
+            llc = (Math.sqrt(Math.pow(Math.abs(landmarks[25].x - landmarks[27].x), 2) + Math.pow(Math.abs(landmarks[25].y - landmarks[27].y), 2)));
+            llb = (Math.sqrt(Math.pow(Math.abs(landmarks[23].x - landmarks[27].x), 2) + Math.pow(Math.abs(landmarks[23].y - landmarks[27].y), 2)));
+
+            rla = (Math.sqrt(Math.pow(Math.abs(landmarks[24].x - landmarks[26].x), 2) + Math.pow(Math.abs(landmarks[24].y - landmarks[26].y), 2)));
+            rlc = (Math.sqrt(Math.pow(Math.abs(landmarks[26].x - landmarks[28].x), 2) + Math.pow(Math.abs(landmarks[26].y - landmarks[28].y), 2)));
+            rlb = (Math.sqrt(Math.pow(Math.abs(landmarks[24].x - landmarks[28].x), 2) + Math.pow(Math.abs(landmarks[24].y - landmarks[28].y), 2)));
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftLegKneeAngle = 100 * Math.acos((Math.pow(lla, 2) + Math.pow(llb, 2) - Math.pow(llc, 2)) / (2 * lla * llb));
+            var rightLegKneeAngle = 100 * Math.acos((Math.pow(rla, 2) + Math.pow(rlb, 2) - Math.pow(rlc, 2)) / (2 * rla * rlb));
+            console.log(leftLegKneeAngle)
+            var laa, lab, lac;
+            var raa, rab, rac;
+            laa = (Math.sqrt(Math.pow(Math.abs(landmarks[25].x - landmarks[27].x), 2) + Math.pow(Math.abs(landmarks[25].y - landmarks[27].y), 2)));
+            lac = (Math.sqrt(Math.pow(Math.abs(landmarks[27].x - landmarks[28].x), 2) + Math.pow(Math.abs(landmarks[27].y - landmarks[28].y), 2)));
+            lab = (Math.sqrt(Math.pow(Math.abs(landmarks[25].x - landmarks[28].x), 2) + Math.pow(Math.abs(landmarks[25].y - landmarks[28].y), 2)));
+
+            raa = (Math.sqrt(Math.pow(Math.abs(landmarks[26].x - landmarks[28].x), 2) + Math.pow(Math.abs(landmarks[26].y - landmarks[28].y), 2)));
+            rac = (Math.sqrt(Math.pow(Math.abs(landmarks[28].x - landmarks[27].x), 2) + Math.pow(Math.abs(landmarks[28].y - landmarks[27].y), 2)));
+            rab = (Math.sqrt(Math.pow(Math.abs(landmarks[26].x - landmarks[27].x), 2) + Math.pow(Math.abs(landmarks[26].y - landmarks[27].y), 2)));
+
+            var leftLegAnkleAngle = 100 * Math.acos((Math.pow(laa, 2) + Math.pow(lab, 2) - Math.pow(lac, 2)) / (2 * laa * lab));
+            var rightLegAnkleAngle = 100 * Math.acos((Math.pow(raa, 2) + Math.pow(rab, 2) - Math.pow(rac, 2)) / (2 * raa * rab));
+
+
+            var lhua, lhub, lhuc;
+            var rhua, rhub, rhuc;
+            lhua = (Math.sqrt(Math.pow((landmarks[11].x - landmarks[13].x), 2) + Math.pow((landmarks[11].y - landmarks[13].y), 2)));
+            lhuc = (Math.sqrt(Math.pow((landmarks[13].x - landmarks[23].x), 2) + Math.pow((landmarks[13].y - landmarks[23].y), 2)));
+            lhub = (Math.sqrt(Math.pow((landmarks[11].x - landmarks[23].x), 2) + Math.pow((landmarks[11].y - landmarks[23].y), 2)));
+
+            rhua = (Math.sqrt(Math.pow((landmarks[12].x - landmarks[24].x), 2) + Math.pow((landmarks[12].y - landmarks[24].y), 2)));
+            rhuc = (Math.sqrt(Math.pow((landmarks[14].x - landmarks[24].x), 2) + Math.pow((landmarks[14].y - landmarks[24].y), 2)));
+            rhub = (Math.sqrt(Math.pow((landmarks[12].x - landmarks[14].x), 2) + Math.pow((landmarks[12].y - landmarks[14].y), 2)));
+            var leftHandUnderArmAngle = 50 * Math.acos((Math.pow(lhua, 2) + Math.pow(lhub, 2) - Math.pow(lhuc, 2)) / (2 * lhua * lhub));
+            var rightHandUnderArmAngle = 50 * Math.acos((Math.pow(rhua, 2) + Math.pow(rhub, 2) - Math.pow(rhuc, 2)) / (2 * rhua * rhub)); //for underarm angle
+
+            var lhsa, lhsb, lhsc;
+            var rhsa, rhsb, rhsc;
+            lhsa = (Math.sqrt(Math.pow(Math.abs(landmarks[11].x - landmarks[12].x), 2) + Math.pow(Math.abs(landmarks[11].y - landmarks[12].y), 2)));
+            lhsb = (Math.sqrt(Math.pow(Math.abs(landmarks[13].x - landmarks[12].x), 2) + Math.pow(Math.abs(landmarks[13].y - landmarks[12].y), 2)));
+            lhsc = (Math.sqrt(Math.pow(Math.abs(landmarks[13].x - landmarks[11].x), 2) + Math.pow(Math.abs(landmarks[13].y - landmarks[11].y), 2)));
+
+            rhsa = (Math.sqrt(Math.pow(Math.abs(landmarks[12].x - landmarks[11].x), 2) + Math.pow(Math.abs(landmarks[12].y - landmarks[11].y), 2)));
+            rhsb = (Math.sqrt(Math.pow(Math.abs(landmarks[14].x - landmarks[11].x), 2) + Math.pow(Math.abs(landmarks[14].y - landmarks[11].y), 2)));
+            rhsc = (Math.sqrt(Math.pow(Math.abs(landmarks[14].x - landmarks[12].x), 2) + Math.pow(Math.abs(landmarks[14].y - landmarks[12].y), 2)));
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftHandAngle = 100 * Math.acos((Math.pow(lhsa, 2) + Math.pow(lhsb, 2) - Math.pow(lhsc, 2)) / (2 * lhsa * lhsb));
+            var rightHandAngle = 100 * Math.acos((Math.pow(rhsa, 2) + Math.pow(rhsb, 2) - Math.pow(rhsc, 2)) / (2 * rhsa * rhsb)); //for hand shoulder angle
+
+            var lhipa, lhipb, lhipc;
+            var rhipa, rhipb, rhipc;
+            lhipa = (Math.sqrt(Math.pow(Math.abs(landmarks[11].x - landmarks[23].x), 2) + Math.pow(Math.abs(landmarks[11].y - landmarks[23].y), 2)));
+            lhipc = (Math.sqrt(Math.pow(Math.abs(landmarks[11].x - landmarks[25].x), 2) + Math.pow(Math.abs(landmarks[11].y - landmarks[25].y), 2)));
+            lhipb = (Math.sqrt(Math.pow(Math.abs(landmarks[23].x - landmarks[25].x), 2) + Math.pow(Math.abs(landmarks[23].y - landmarks[25].y), 2)));
+
+            rhipa = (Math.sqrt(Math.pow(Math.abs(landmarks[12].x - landmarks[24].x), 2) + Math.pow(Math.abs(landmarks[12].y - landmarks[24].y), 2)));
+            rhipc = (Math.sqrt(Math.pow(Math.abs(landmarks[12].x - landmarks[26].x), 2) + Math.pow(Math.abs(landmarks[12].y - landmarks[26].y), 2)));
+            rhipb = (Math.sqrt(Math.pow(Math.abs(landmarks[24].x - landmarks[26].x), 2) + Math.pow(Math.abs(landmarks[24].y - landmarks[26].y), 2)));
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftHipAngle = 50 * Math.acos((Math.pow(lhipa, 2) + Math.pow(lhipb, 2) - Math.pow(lhipc, 2)) / (2 * lhipa * lhipb));
+            var rightHipAngle = 50 * Math.acos((Math.pow(rhipa, 2) + Math.pow(rhipb, 2) - Math.pow(rhipc, 2)) / (2 * rhipa * rhipb)); //for Hip angle
+
+
+            // console.log(rightHipAngle);
+
+
+
+
+            const userspose = [];
+
+
+            if (Math.abs(rightAnklex) > Math.abs(rightShoulderx)) { //if left leg outside shoulders
+                userspose.push("LeftLegOutsideShoulder");
+            }
+            if (Math.abs(rightAnklex) < Math.abs(rightShoulderx)) { //if left leg inside shoulders
+                userspose.push("LeftLegInsideShoulder");
+            }
+
+            if (Math.abs(leftAnklex) < Math.abs(leftShoulderx)) { //if right leg outside shoulders
+                userspose.push("RightLegOutsideShoulder");
+            }
+
+            if (Math.abs(leftAnklex) > Math.abs(leftShoulderx)) { //if right leg inside shoulders
+                userspose.push("RightLegInsideShoulder");
+            }
+
+
+            // ***************************** //
+            if (((leftHandUnderArmAngle > 0 && leftHandUnderArmAngle < 20))) { //hands down
+                if (leftWristy > leftElbowy && leftElbowy > leftShouldery) {
+                    userspose.push("LeftHandStraightDown");
+                }
+            }
+            if (((rightHandUnderArmAngle > 0 && rightHandUnderArmAngle < 20))) {
+                if (rightWristy > rightElbowy && rightElbowy > rightShouldery) {
+                    userspose.push("RightHandStraightDown");
+                }
+            }
+            // ***************************** //
+
+
+
+            // console.log(leftHipAngle);
+            if (rightWristy < rightShouldery) {                               //hands up
+                if (rightHandAngle > 80) {
+                    userspose.push("RightHandStraightUp");
+                }
+                if(rightHipAngle<60 && leftHandUnderArmAngle>120 && leftHandUnderArmAngle <150){
+                    userspose.push("LeftHandStraightUp");
+                }
+            }
+            
+            if (leftWristy < leftShouldery) {
+                if (leftHandAngle > 80) {
+                    userspose.push("LeftHandStraightUp");
+                }
+                if(leftHipAngle<60 && rightHandUnderArmAngle>120 && rightHandUnderArmAngle <150){
+                    // alert(1);
+                    userspose.push("RightHandStraightUp");
+                }
+            }
+
+            if (Math.abs(leftWristy - leftElbowy) < 5 && Math.abs(leftElbowy - leftShouldery) < 5) {
+                // console.log('RH Ok -=-');
+                userspose.push("RightHandStraight")
+            }
+            if (Math.abs(rightWristy - rightElbowy) < 5 && Math.abs(rightElbowy - rightShouldery) < 5) {
+                // console.log('LH Ok -=-');
+                userspose.push("LeftHandStraight")
+            }
+
+
+            if ((leftLegKneeAngle > 50 && leftLegKneeAngle < 150) && (leftLegAnkleAngle > 60 && leftLegAnkleAngle < 130) ||
+                (rightLegKneeAngle > 50 && rightLegKneeAngle < 150) && (rightLegAnkleAngle > 60 && rightLegKneeAngle < 130)) {
+                userspose.push("KneesBend90");
+            }
+            if(leftLegKneeAngle<10 || rightLegKneeAngle<10){
+                userspose.push("KneeNotBend");
+            }
+
+
+            if(leftHipAngle>140 || rightHipAngle>140){
+                userspose.push("HipsNotBend");
+            }
+            if ((leftHipAngle >= 60&& leftHipAngle < 140) || (rightHipAngle>=60 && rightHipAngle < 140)) {
+                userspose.push("HipsBend");
+            }
+            if (leftHipAngle < 60 || rightHipAngle < 60) {
+                if(userspose.includes("HipsBend")){
+                    userspose.splice(userspose.indexOf("HipsBend"),1);
+                }
+                userspose.push("HipsBend45");
+            }
+            // if ((leftLegKneeAngle < 100 || rightLegKneeAngle < 100) && rh == 0) {
+            //     // console.log('RH Ok -=-');
+            //     rh++;
+            // } else {
+            //     console.log("Keep Your Body Bent!");
+            // }
+
+            //   if(Math.abs(rightWristx-rightElbowx)<5 && Math.abs(rightElbowx-rightShoulderx)<5 &&lh==0){
+            //     // console.log('LH Ok -=-');
+            //     lh++;
+            //   }else{
+            //     console.log("Keep Your Left Hand Straight!");
+            //   }
+
+
+            //   if(Math.abs(leftToey-rightToey)<2 
+            //  && Math.abs(rightAnklex-leftAnklex) < Math.abs(rightShoulderx-leftShoulderx)  && l==0){ //if legs outside shoulders
+            //  l++
+            //   }else{
+            //     console.log("Keep Your Legs Inside!"); 
+            //   }
+            // if(((leftLegKneeAngle>100 && leftLegKneeAngle<120) || (rightLegKneeAngle>100 && rightLegKneeAngle<120)) &&rh==0){
+            //     // console.log('RH Ok -=-');
+            //     if(((Math.abs(leftWristy-leftToey)<10)||(Math.abs(rightWristy-rightToey)<10)) ){
+            //       rh++;
+            //     }
+            //   }else{
+            //     console.log("Keep Your  Leg Up Straight!");
+            //   }
+
+            console.log(userspose)
+            var temp =
+            {
+                "Big Toe Pose": 0,
+                "Chair Pose To Left": 0,
+                "Chair Pose To Right": 0,
+                "Dolphin Pose": 0,
+                "Extended Side Angle Pose To Left": 0,
+                "Extended Side Angle Pose To Right": 0,
+                "Warrior 2 Pose":0,
+                "Half Moon Pose": 0,
+                "High Lunge": 0,
+                "Mountain Pose": 0,
+                "Upward Salute": 0,
+                "Star Pose": 0,
+            }
+
+            var filteredArray;
+            var count = 0, i = 0, j = 0;
+            for (i in asana) {
+                // for (j in userspose) {
+                // if (asana[i].includes(userspose[j])) {
+                    
+                    // document.getElementById('asanaName').innerHTML = "Guessing...";
+                    //     document.getElementById('tryasana').src ="https://149363410.v2.pressablecdn.com/wp-content/uploads/2017/03/1NwIjQsu95P2SlRlVqEJSeg.png";
+                    
+                    
+                    filteredArray = asana[i].filter(value => userspose.includes(value));
+                    if (filteredArray.length == asana[i].length && count<1) {
+                        count++;
+                    document.getElementById('asanaName').innerHTML = i;
+                    document.getElementById('tryasana').src = asanaImg[i];
+                }
+                // }
+            }
+            // var keysSorted = Object.keys(temp).sort(function(a,b){return temp[b]-temp[a]})
+            // console.log(filteredArray);
+            // console.log(userspose)
+            // console.log(keysSorted);     
+
+            userspose.length = 0;
+
+
+
+            drawConnectors(canvasCtx, landmarks, POSE_CONNECTIONS,
+                { color: 'green', lineWidth: 4 });
+            drawLandmarks(canvasCtx, POSE_CONNECTIONS,
+                { color: 'green', lineWidth: 20 });
+            // counterStart();
+            // counterEnd();
+
+        }
+
+
+        function onResults(results) {
+            if (results.poseLandmarks) {
+                // console.log(POSE_CONNECTIONS)
+
+                canvasCtx.save();
+                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                canvasCtx.drawImage(results.segmentationMask, 0, 0,
+                    canvasElement.width, canvasElement.height);
+
+                // Only overwrite existing pixels.
+                canvasCtx.globalCompositeOperation = 'source-in';
+                canvasCtx.fillStyle = 'transparent';
+                canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+
+                // Only overwrite missing pixels.
+                canvasCtx.globalCompositeOperation = 'destination-atop';
+                canvasCtx.drawImage(
+                    results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+                canvasCtx.globalCompositeOperation = 'source-over';
+                drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS,
+                    { color: 'white', lineWidth: 5 });
+                // console.log(POSE_CONNECTIONS)
+                // drawLandmarks(canvasCtx, results.poseLandmarks,
+                // {color: '#ffffff7a', lineWidth: 20});
+                // drawLandmarks(canvasCtx, results.poseLandmarks,
+                // {color: 'white', lineWidth: 0.01});
+
+                // warrior1pose(canvasCtx,results.poseLandmarks);
+                // warrior2pose(canvasCtx,results.poseLandmarks);
+                // upwardsalute(canvasCtx,results.poseLandmarks);
+                // starpose(canvasCtx,results.poseLandmarks);
+                // mountainpose(canvasCtx,results.poseLandmarks)
+
+
+                poseDetect(canvasCtx, results.poseLandmarks);
+
+                canvasCtx.restore();
+
+                grid.updateLandmarks(results.poseWorldLandmarks);
+            }
+        }
+
+        const pose = new Pose({
+            locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+            }
+        });
+        pose.setOptions({
+            modelComplexity: 1,
+            smoothLandmarks: true,
+            enableSegmentation: true,
+            smoothSegmentation: true,
+            minDetectionConfidence: 0.9,
+            minTrackingConfidence: 0.9
+        });
+        pose.onResults(onResults);
+
+        const camera = new Camera(videoElement, {
+            onFrame: async () => {
+                await pose.send({ image: videoElement });
+            },
+            width: 640,
+            height: 360
+        });
+        camera.start();
+    </script>
+</body>
+
+</html>

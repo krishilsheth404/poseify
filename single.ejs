@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>YOOGA - Free Yoga Website Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Free Website Template" name="keywords">
+        <meta content="Free Website Template" name="description">
+
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d/control_utils_3d.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+        
+
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+        <link href="lib/flaticon/font/flaticon.css" rel="stylesheet"> 
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+        <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+ <style>
+
+.cont {
+  width: 250px;
+  height: 250px;
+  position: fixed;
+  text-align: center;
+  font-weight: bold;
+  display: none;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%, -50%);
+  border: 2px solid #aaa;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 125px;
+  height: 100px;
+  transform-origin: 0 0;
+  background-image: linear-gradient(rgb(255, 255, 255), transparent);
+  animation: spin 1s infinite linear;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+.number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+}
+.number::after {
+  content: '';
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 150px;
+  line-height: 250px;
+  animation: count 10s infinite steps(10, start);
+}
+@keyframes count {
+  0%, 100% {
+    content: '0';
+  }
+  10% {
+    content: '9';
+  }
+  20% {
+    content: '8';
+  }
+  30% {
+    content: '7';
+  }
+  40% {
+    content: '6';
+  }
+  50% {
+    content: '5';
+  }
+  60% {
+    content: '4';
+  }
+  70% {
+    content: '3';
+  }
+  80% {
+    content: '2';
+  }
+  90% {
+    content: '1';
+  }
+}
+
+ </style>
+    <body>
+        <!-- Top Bar Start -->
+        <div class="top-bar d-none d-md-block">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="top-bar-left">
+                            <div class="text">
+                                <i class="far fa-clock"></i>
+                                <h2>8:00 - 9:00</h2>
+                                <p>Mon - Fri</p>
+                            </div>
+                            <div class="text">
+                                <i class="fa fa-phone-alt"></i>
+                                <h2>+123 456 7890</h2>
+                                <p>For Appointment</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="top-bar-right">
+                            <div class="social">
+                                <a href=""><i class="fab fa-twitter"></i></a>
+                                <a href=""><i class="fab fa-facebook-f"></i></a>
+                                <a href=""><i class="fab fa-linkedin-in"></i></a>
+                                <a href=""><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top Bar End -->
+
+        <!-- Nav Bar Start -->
+        <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <div class="container-fluid">
+                <a href="index.html" class="navbar-brand">Y<span>oo</span>ga</a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto">
+                        <a href="index.html" class="nav-item nav-link">Home</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="service.html" class="nav-item nav-link">Service</a>
+                        <a href="price.html" class="nav-item nav-link">Price</a>
+                        <a href="class.html" class="nav-item nav-link">Class</a>
+                        <a href="team.html" class="nav-item nav-link">Trainer</a>
+                        <a href="portfolio.html" class="nav-item nav-link">Pose</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Blog</a>
+                            <div class="dropdown-menu">
+                                <a href="blog.html" class="dropdown-item">Blog Grid</a>
+                                <a href="single.html" class="dropdown-item">Blog Detail</a>
+                            </div>
+                        </div>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Nav Bar End -->
+
+
+        <!-- Page Header Start -->
+        <div class="page-header">
+            <div class="container" >
+                <div class="row" style="position: relative;">
+                    <h2><%=final[2]%></h2>
+                    
+                    <video class="input_video" width="0px" height="0px"></video>
+                    <canvas class="output_canvas" width="1280px" height="720px" ></canvas>
+                    <div class="landmark-grid-container" style="display: none;"></div>
+                    
+                    <div class="cont" id="counter">
+                        <div class="spinner"></div>
+                        <span class="number"></span>
+                        <!-- <img src="<%=final[1]%>" alt="Yoga Pose" style="width: 100%;height:auto;"> -->
+                    </div>
+                    
+                    
+                    
+                    
+                   
+                    
+                </div>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+
+        <!-- Single Post Start-->
+        <div class="single">
+            <div class="container">
+                <div class="row" style="justify-content: center;">
+                    <div class="col-lg-8">
+                        <div class="single-content wow fadeInUp">
+                            <img src="<%=final[1]%>" />
+                            <h2 class="widget-title">Steps</h2>
+                            
+                            <div class="category-widget">
+                                <ul style="font-size: 22px;">
+                                  <% for(var i=0; i < final[0].steps.length; i++) { %>
+                                    <li><%=final[0].steps[i]%></li>
+                                   <%}%>
+                                </ul>
+                            </div>
+
+                        </div>
+                   
+                      
+              
+
+                     
+                  
+                    </div>
+
+                  
+                </div>
+            </div>
+        </div>
+        <!-- Single Post End-->   
+
+
+        <!-- Footer Start -->
+    
+        <!-- Footer End -->
+
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="lib/isotope/isotope.pkgd.min.js"></script>
+        <script src="lib/lightbox/js/lightbox.min.js"></script>
+
+        <!-- Contact Javascript File -->
+        <script src="mail/jqBootstrapValidation.min.js"></script>
+        <script src="mail/contact.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+
+        <script type="module">
+            // console.log(final);
+            const videoElement = document.getElementsByClassName('input_video')[0];
+            const canvasElement = document.getElementsByClassName('output_canvas')[0];
+            const canvasCtx = canvasElement.getContext('2d');
+            const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
+            const grid = new LandmarkGrid(landmarkContainer);
+          
+            function counterStart(){
+               document.getElementById('counter').style.display='block';
+            }
+            function counterEnd(){
+               document.getElementById('counter').style.display='none';
+            }
+            function boatpose(canvasCtx,landmarks){
+              var leftWristx=Math.abs(landmarks[16].x * 100);
+              var leftWristy=Math.abs(landmarks[16].y * 100);
+              var rightWristx=Math.abs(landmarks[15].x * 100);
+              var rightWristy=Math.abs(landmarks[15].y * 100);
+              
+               
+              var leftElbowx=Math.abs(landmarks[14].x * 100);
+              var leftElbowy=Math.abs(landmarks[14].y * 100);
+              var rightElbowx=Math.abs(landmarks[13].x * 100);
+              var rightElbowy=Math.abs(landmarks[13].y * 100);
+          
+              var leftKneex=Math.abs(landmarks[25].x * 100);
+              var leftKneey=Math.abs(landmarks[25].y * 100);
+              var rightKneex=Math.abs(landmarks[26].x * 100);
+              var rightKneey=Math.abs(landmarks[26].y * 100);
+            
+              var leftHipx=Math.abs(landmarks[23].x * 100);
+              var leftHipy=Math.abs(landmarks[23].y * 100);
+              var rightHipx=Math.abs(landmarks[24].x * 100);
+              var rightHipy=Math.abs(landmarks[24].y * 100);
+          
+              
+              var leftToex=Math.abs(landmarks[32].x * 100);
+              var leftToey=Math.abs(landmarks[32].y * 100);
+              var rightToex=Math.abs(landmarks[31].x * 100);
+              var rightToey=Math.abs(landmarks[31].y * 100);
+              var leftAnklex=Math.abs(landmarks[30].x * 100);
+              var leftAnkley=Math.abs(landmarks[30].y * 100);
+              var rightAnklex=Math.abs(landmarks[29].x * 100);
+              var rightAnkley=Math.abs(landmarks[29].y * 100);//leg co-ordinates
+          
+              var leftShoulderx=Math.abs(landmarks[12].x * 100);
+              var leftShouldery=Math.abs(landmarks[12].y * 100);
+              var rightShoulderx=Math.abs(landmarks[11].x * 100);
+              var rightShouldery=Math.abs(landmarks[11].y * 100);
+              var rh=0,lh=0,l=0;
+          
+          
+          
+              var lla,llb,llc;
+              var mpx=(landmarks[24].x+landmarks[23].x)/2;
+              var mpy=(landmarks[24].y+landmarks[23].y)/2;
+            var rla,rlb,rlc;
+            lla=(Math.sqrt(Math.pow((landmarks[11].x-landmarks[23].x),2)+Math.pow((landmarks[11].y-landmarks[23].y),2)));
+            llb=(Math.sqrt(Math.pow((landmarks[23].x-landmarks[25].x),2)+Math.pow((landmarks[23].y-landmarks[25].y),2)));
+            llc=(Math.sqrt(Math.pow((landmarks[11].x-landmarks[25].x),2)+Math.pow((landmarks[11].y-landmarks[25].y),2)));
+            
+            rla=(Math.sqrt(Math.pow(Math.abs(landmarks[12].x-landmarks[24].x),2)+Math.pow(Math.abs(landmarks[12].y-landmarks[24].y),2)));
+            rlb=(Math.sqrt(Math.pow(Math.abs(landmarks[24].x-landmarks[26].x),2)+Math.pow(Math.abs(landmarks[24].y-landmarks[26].y),2)));
+            rlc=(Math.sqrt(Math.pow(Math.abs(landmarks[12].x-landmarks[26].x),2)+Math.pow(Math.abs(landmarks[12].y-landmarks[26].y),2)));
+            // // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftLegKneeAngle=50*Math.acos((Math.pow(lla,2)+Math.pow(llb,2)-Math.pow(llc,2))/(2*lla*llb));
+            var rightLegKneeAngle=50*Math.acos((Math.pow(rla,2)+Math.pow(rlb,2)-Math.pow(rlc,2))/(2*rla*rlb));
+            // var leftLegKneeAngle=100*Math.acos((Math.pow(lla,2)+Math.pow(llb,2)-Math.pow(llc,2))/(2*lla*llb));
+          // console.log(100*Math.acos((Math.pow(lla,2)+Math.pow(llb,2)-Math.pow(llc,2))/(2*lla*llb)));
+          // console.log(100*Math.acos((Math.pow(llb,2)+Math.pow(llc,2)-Math.pow(lla,2))/(2*llb*llc)));
+          console.log(leftLegKneeAngle);
+          
+          if(Math.abs(leftToey-rightToey)<5
+             && Math.abs(rightAnklex-leftAnklex) > Math.abs(rightShoulderx-leftShoulderx)  && rh==0){ //if legs outside shoulders
+              l++;
+              lh++;
+              
+            }
+            
+            if( (leftLegKneeAngle<100 || rightLegKneeAngle<100) && rh==0){
+                // console.log('RH Ok -=-');
+                rh++;
+              }else{
+                console.log("Keep Your Body Bent!");
+              }
+            //   if(Math.abs(rightWristx-rightElbowx)<5 && Math.abs(rightElbowx-rightShoulderx)<5 &&lh==0){
+            //     // console.log('LH Ok -=-');
+            //     lh++;
+            //   }else{
+            //     console.log("Keep Your Left Hand Straight!");
+            //   }
+          
+              
+            //   if(Math.abs(leftToey-rightToey)<2 
+            //  && Math.abs(rightAnklex-leftAnklex) < Math.abs(rightShoulderx-leftShoulderx)  && l==0){ //if legs outside shoulders
+            //  l++
+            //   }else{
+            //     console.log("Keep Your Legs Inside!"); 
+            //   }
+            // if(((leftLegKneeAngle>100 && leftLegKneeAngle<120) || (rightLegKneeAngle>100 && rightLegKneeAngle<120)) &&rh==0){
+            //     // console.log('RH Ok -=-');
+            //     if(((Math.abs(leftWristy-leftToey)<10)||(Math.abs(rightWristy-rightToey)<10)) ){
+            //       rh++;
+            //     }
+            //   }else{
+            //     console.log("Keep Your  Leg Up Straight!");
+            //   }
+           
+            
+           
+          
+              if((rh>0 &&lh>0 && l>0)){
+                drawConnectors(canvasCtx, landmarks,POSE_CONNECTIONS,
+                {color: 'green', lineWidth: 4});
+                drawLandmarks(canvasCtx, POSE_CONNECTIONS,
+                {color: 'green', lineWidth: 20});
+                // counterStart();
+              }else{
+                // counterEnd();
+              }
+          
+            }
+          
+          
+            function mountainpose(canvasCtx,landmarks){
+              var leftWristx=Math.abs(landmarks[16].x * 100);
+              var leftWristy=Math.abs(landmarks[16].y * 100);
+              var rightWristx=Math.abs(landmarks[15].x * 100);
+              var rightWristy=Math.abs(landmarks[15].y * 100);
+              
+              var leftElbowx=Math.abs(landmarks[14].x * 100);
+              var leftElbowy=Math.abs(landmarks[14].y * 100);
+              var rightElbowx=Math.abs(landmarks[13].x * 100);
+              var rightElbowy=Math.abs(landmarks[13].y * 100);
+              
+              var leftKneex=Math.abs(landmarks[25].x * 100);
+              var leftKneey=Math.abs(landmarks[25].y * 100);
+              var rightKneex=Math.abs(landmarks[26].x * 100);
+              var rightKneey=Math.abs(landmarks[26].y * 100);
+            
+              var leftHipx=Math.abs(landmarks[23].x * 100);
+              var leftHipy=Math.abs(landmarks[23].y * 100);
+              var rightHipx=Math.abs(landmarks[24].x * 100);
+              var rightHipy=Math.abs(landmarks[24].y * 100);
+          
+              
+              var leftToex=Math.abs(landmarks[32].x * 100);
+              var leftToey=Math.abs(landmarks[32].y * 100);
+              var rightToex=Math.abs(landmarks[31].x * 100);
+              var rightToey=Math.abs(landmarks[31].y * 100);
+              var leftAnklex=Math.abs(landmarks[30].x * 100);
+              var leftAnkley=Math.abs(landmarks[30].y * 100);
+              var rightAnklex=Math.abs(landmarks[29].x * 100);
+              var rightAnkley=Math.abs(landmarks[29].y * 100);//leg co-ordinates
+          
+              var leftShoulderx=Math.abs(landmarks[12].x * 100);
+              var leftShouldery=Math.abs(landmarks[12].y * 100);
+              var rightShoulderx=Math.abs(landmarks[11].x * 100);
+              var rightShouldery=Math.abs(landmarks[11].y * 100);
+              var rh=0,lh=0,l=0;
+          
+          
+          
+            var lla,llb,llc;
+            var rla,rlb,rlc;
+            lla=(Math.sqrt(Math.pow((landmarks[11].x-landmarks[13].x),2)+Math.pow((landmarks[11].y-landmarks[13].y),2)));
+            llc=(Math.sqrt(Math.pow((landmarks[13].x-landmarks[23].x),2)+Math.pow((landmarks[13].y-landmarks[23].y),2)));
+            llb=(Math.sqrt(Math.pow((landmarks[11].x-landmarks[23].x),2)+Math.pow((landmarks[11].y-landmarks[23].y),2)));
+            
+            rla=(Math.sqrt(Math.pow((landmarks[12].x-landmarks[24].x),2)+Math.pow((landmarks[12].y-landmarks[24].y),2)));
+            rlc=(Math.sqrt(Math.pow((landmarks[14].x-landmarks[24].x),2)+Math.pow((landmarks[14].y-landmarks[24].y),2)));
+            rlb=(Math.sqrt(Math.pow((landmarks[12].x-landmarks[14].x),2)+Math.pow((landmarks[12].y-landmarks[14].y),2)));
+            var leftHandUnderArmAngle=50*Math.acos((Math.pow(lla,2)+Math.pow(llb,2)-Math.pow(llc,2))/(2*lla*llb));
+            var rightHandUnderArmAngle=50*Math.acos((Math.pow(rla,2)+Math.pow(rlb,2)-Math.pow(rlc,2))/(2*rla*rlb));
+            
+          console.log(rightHandUnderArmAngle);
+          
+              
+              if(Math.abs(leftToey-rightToey)<2 && Math.abs(leftShouldery-rightShouldery)<2
+             && Math.abs(rightAnklex-leftAnklex) < Math.abs(rightHipx-leftHipx) && Math.abs(rightKneex-leftKneex)< Math.abs(rightHipx-leftHipx)  
+            && Math.abs(rightHipx-leftHipx) < Math.abs(rightShoulderx-leftShoulderx)  && l==0){ //if legs outside shoulders
+             l++
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[24,26],[26,28],[23,25],[25,27],[24,23]],
+                  {color: 'red', lineWidth: 10});
+                  
+                console.log("Keep Your Legs Inside!"); 
+              }
+            
+              if(((leftHandUnderArmAngle>0 && leftHandUnderArmAngle<10) &&lh==0)){
+                if(leftWristy>leftElbowy && leftElbowy>leftShouldery){
+                  lh++;
+                }
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[11,13],[13,15]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Left Hand In Proper Angle!");
+              }
+              
+              if(((rightHandUnderArmAngle>0 && rightHandUnderArmAngle<10)) &&rh==0){
+                if(rightWristy>rightElbowy && rightElbowy>rightShouldery){
+                  rh++;
+                }
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[16,14],[14,12]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Right Hand In Proper Angle!");
+              }
+           
+            
+           
+          
+              if((rh>0 &&lh>0 && l>0)){
+                drawConnectors(canvasCtx, landmarks,POSE_CONNECTIONS,
+                {color: 'green', lineWidth: 4});
+                counterStart();
+              }else{
+                counterEnd();
+              }
+          
+            }
+            function upwardsalute(canvasCtx,landmarks){
+                
+              // Math.abs(results.poseLandmarks[16].x * 100),Math.abs(results.poseLandmarks[16].y * 100),
+              //            Math.abs(results.poseLandmarks[15].x * 100),Math.abs(results.poseLandmarks[15].y*100)
+              
+              var leftWristx=Math.abs(landmarks[16].x * 100);
+              var leftWristy=Math.abs(landmarks[16].y * 100);
+              var rightWristx=Math.abs(landmarks[15].x * 100);
+              var rightWristy=Math.abs(landmarks[15].y * 100);
+              
+              var leftElbowx=Math.abs(landmarks[14].x * 100);
+              var leftElbowy=Math.abs(landmarks[14].y * 100);
+              var rightElbowx=Math.abs(landmarks[13].x * 100);
+              var rightElbowy=Math.abs(landmarks[13].y * 100);
+              
+              var leftToex=Math.abs(landmarks[32].x * 100);
+              var leftToey=Math.abs(landmarks[32].y * 100);
+              var rightToex=Math.abs(landmarks[31].x * 100);
+              var rightToey=Math.abs(landmarks[31].y * 100);
+              var leftAnklex=Math.abs(landmarks[30].x * 100);
+              var leftAnkley=Math.abs(landmarks[30].y * 100);
+              var rightAnklex=Math.abs(landmarks[29].x * 100);
+              var rightAnkley=Math.abs(landmarks[29].y * 100);//leg co-ordinates
+          
+              var leftShoulderx=Math.abs(landmarks[12].x * 100);
+              var leftShouldery=Math.abs(landmarks[12].y * 100);
+              var rightShoulderx=Math.abs(landmarks[11].x * 100);
+              var rightShouldery=Math.abs(landmarks[11].y * 100);
+              var rh=0,lh=0,l=0;
+          
+          
+          
+              var lha,lhb,lhc;
+            var rha,rhb,rhc;
+            lha=(Math.sqrt(Math.pow(Math.abs(landmarks[11].x-landmarks[12].x),2)+Math.pow(Math.abs(landmarks[11].y-landmarks[12].y),2)));
+            lhb=(Math.sqrt(Math.pow(Math.abs(landmarks[13].x-landmarks[12].x),2)+Math.pow(Math.abs(landmarks[13].y-landmarks[12].y),2)));
+            lhc=(Math.sqrt(Math.pow(Math.abs(landmarks[13].x-landmarks[11].x),2)+Math.pow(Math.abs(landmarks[13].y-landmarks[11].y),2)));
+            
+            rha=(Math.sqrt(Math.pow(Math.abs(landmarks[12].x-landmarks[11].x),2)+Math.pow(Math.abs(landmarks[12].y-landmarks[11].y),2)));
+            rhb=(Math.sqrt(Math.pow(Math.abs(landmarks[14].x-landmarks[11].x),2)+Math.pow(Math.abs(landmarks[14].y-landmarks[11].y),2)));
+            rhc=(Math.sqrt(Math.pow(Math.abs(landmarks[14].x-landmarks[12].x),2)+Math.pow(Math.abs(landmarks[14].y-landmarks[12].y),2)));
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftHandAngle=100*Math.acos((Math.pow(lha,2)+Math.pow(lhb,2)-Math.pow(lhc,2))/(2*lha*lhb));
+            var rightHandAngle=100*Math.acos((Math.pow(rha,2)+Math.pow(rhb,2)-Math.pow(rhc,2))/(2*rha*rhb));
+            console.log(leftHandAngle);
+          
+          
+              
+              if(Math.abs(leftToey-rightToey)<2 
+             && Math.abs(rightAnklex-leftAnklex) < Math.abs(rightShoulderx-leftShoulderx)  && l==0){ //if legs outside shoulders
+             l++
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[24,26],[26,28],[23,25],[25,27],[24,23]],
+                  {color: 'red', lineWidth: 10});
+                console.log("Keep Your Legs Inside!"); 
+              }
+          
+              if(leftWristy<leftShouldery){
+              if(leftHandAngle>80  &&rh==0){
+                // console.log('RH Ok -=-');
+                rh++;
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[11,13],[13,15]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Right Hand Up Straight!");
+              }
+            }else{
+              drawConnectors(canvasCtx, landmarks, [[11,13],[13,15]],
+                {color: 'red', lineWidth: 10});
+            }
+          
+          
+            if(rightWristy<rightShouldery){
+              if(rightHandAngle>80 &&lh==0){
+                // console.log('LH Ok -=-');
+                lh++;
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[16,14],[14,12]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Left Hand Up Straight!");
+              }
+            }else{
+              drawConnectors(canvasCtx, landmarks, [[16,14],[14,12]],
+                {color: 'red', lineWidth: 10});
+            }
+          
+              if((rh>0 && lh>0 && l>0)){
+                drawConnectors(canvasCtx, landmarks,POSE_CONNECTIONS,
+                {color: 'green', lineWidth: 4});
+                counterStart();
+              }else{
+                counterEnd();
+              }
+            } 
+            function starpose(canvasCtx,landmarks){
+              var leftWristx=Math.abs(landmarks[16].x * 100);
+              var leftWristy=Math.abs(landmarks[16].y * 100);
+              var rightWristx=Math.abs(landmarks[15].x * 100);
+              var rightWristy=Math.abs(landmarks[15].y * 100);
+              
+              var leftElbowx=Math.abs(landmarks[14].x * 100);
+              var leftElbowy=Math.abs(landmarks[14].y * 100);
+              var rightElbowx=Math.abs(landmarks[13].x * 100);
+              var rightElbowy=Math.abs(landmarks[13].y * 100);
+              
+              var leftToex=Math.abs(landmarks[32].x * 100);
+              var leftToey=Math.abs(landmarks[32].y * 100);
+              var rightToex=Math.abs(landmarks[31].x * 100);
+              var rightToey=Math.abs(landmarks[31].y * 100);
+              var leftAnklex=Math.abs(landmarks[30].x * 100);
+              var leftAnkley=Math.abs(landmarks[30].y * 100);
+              var rightAnklex=Math.abs(landmarks[29].x * 100);
+              var rightAnkley=Math.abs(landmarks[29].y * 100);//leg co-ordinates
+          
+              var leftShoulderx=Math.abs(landmarks[12].x * 100);
+              var leftShouldery=Math.abs(landmarks[12].y * 100);
+              var rightShoulderx=Math.abs(landmarks[11].x * 100);
+              var rightShouldery=Math.abs(landmarks[11].y * 100);
+              var rh=0,lh=0,l=0;
+           
+             
+          
+          
+          
+              if(Math.abs(leftToey-rightToey)<5
+             && Math.abs(rightAnklex-leftAnklex) > Math.abs(rightShoulderx-leftShoulderx)  && l==0){ //if legs outside shoulders
+              l++;
+            }else{
+                drawConnectors(canvasCtx, landmarks, [[24,26],[26,28],[23,25],[25,27]],
+                  {color: 'red', lineWidth: 10});
+                  
+                console.log("Keep Your Legs Ouside Your Shoulders!"); 
+              }
+          
+              if(Math.abs(leftWristy-leftElbowy)<5 && Math.abs(leftElbowy-leftShouldery)<5 &&rh==0){
+                // console.log('RH Ok -=-');
+                rh++;
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[16,14],[14,12]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Right Hand Straight!");
+              }
+              if(Math.abs(rightWristy-rightElbowy)<5 && Math.abs(rightElbowy-rightShouldery)<5 &&lh==0){
+                // console.log('LH Ok -=-');
+                lh++;
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[11,13],[13,15]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Left Hand Straight!");
+              }
+          
+              if((rh>0 && lh>0 && l>0)){
+                drawConnectors(canvasCtx, landmarks,POSE_CONNECTIONS,
+                {color: 'green', lineWidth: 5});
+                counterStart();
+              }else{
+                counterEnd();
+               
+              }
+          
+            }
+            function warrior1pose(canvasCtx,landmarks){
+              var leftWristx=Math.abs(landmarks[16].x * 100);
+              var leftWristy=Math.abs(landmarks[16].y * 100);
+              var rightWristx=Math.abs(landmarks[15].x * 100);
+              var rightWristy=Math.abs(landmarks[15].y * 100);
+              
+              var leftElbowx=Math.abs(landmarks[14].x * 100);
+              var leftElbowy=Math.abs(landmarks[14].y * 100);
+              var rightElbowx=Math.abs(landmarks[13].x * 100);
+              var rightElbowy=Math.abs(landmarks[13].y * 100);
+              
+              var leftToex=Math.abs(landmarks[32].x * 100);
+              var leftToey=Math.abs(landmarks[32].y * 100);
+              var rightToex=Math.abs(landmarks[31].x * 100);
+              var rightToey=Math.abs(landmarks[31].y * 100);
+              var leftAnklex=Math.abs(landmarks[30].x * 100);
+              var leftAnkley=Math.abs(landmarks[30].y * 100);
+              var rightAnklex=Math.abs(landmarks[29].x * 100);
+              var rightAnkley=Math.abs(landmarks[29].y * 100);//leg co-ordinates
+          
+              var leftShoulderx=Math.abs(landmarks[12].x * 100);
+              var leftShouldery=Math.abs(landmarks[12].y * 100);
+              var rightShoulderx=Math.abs(landmarks[11].x * 100);
+              var rightShouldery=Math.abs(landmarks[11].y * 100);
+              var rh=0,lh=0,l=0;
+              
+            // console.log(leftAnklex,leftShoulderx)
+            var lla,llb,llc;
+            var rla,rlb,rlc;
+            lla=(Math.sqrt(Math.pow(Math.abs(landmarks[23].x-landmarks[25].x),2)+Math.pow(Math.abs(landmarks[23].y-landmarks[25].y),2)));
+            llc=(Math.sqrt(Math.pow(Math.abs(landmarks[25].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[25].y-landmarks[27].y),2)));
+            llb=(Math.sqrt(Math.pow(Math.abs(landmarks[23].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[23].y-landmarks[27].y),2)));
+            
+            rla=(Math.sqrt(Math.pow(Math.abs(landmarks[24].x-landmarks[26].x),2)+Math.pow(Math.abs(landmarks[24].y-landmarks[26].y),2)));
+            rlc=(Math.sqrt(Math.pow(Math.abs(landmarks[26].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[26].y-landmarks[28].y),2)));
+            rlb=(Math.sqrt(Math.pow(Math.abs(landmarks[24].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[24].y-landmarks[28].y),2)));
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftLegKneeAngle=100*Math.acos((Math.pow(lla,2)+Math.pow(llb,2)-Math.pow(llc,2))/(2*lla*llb));
+            var rightLegKneeAngle=100*Math.acos((Math.pow(rla,2)+Math.pow(rlb,2)-Math.pow(rlc,2))/(2*rla*rlb));
+          
+            var laa,lab,lac;
+            var raa,rab,rac;
+            laa=(Math.sqrt(Math.pow(Math.abs(landmarks[25].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[25].y-landmarks[27].y),2)));
+            lac=(Math.sqrt(Math.pow(Math.abs(landmarks[27].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[27].y-landmarks[28].y),2)));
+            lab=(Math.sqrt(Math.pow(Math.abs(landmarks[25].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[25].y-landmarks[28].y),2)));
+            
+            raa=(Math.sqrt(Math.pow(Math.abs(landmarks[26].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[26].y-landmarks[28].y),2)));
+            rac=(Math.sqrt(Math.pow(Math.abs(landmarks[28].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[28].y-landmarks[27].y),2)));
+            rab=(Math.sqrt(Math.pow(Math.abs(landmarks[26].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[26].y-landmarks[27].y),2)));
+          
+            var leftLegAnkleAngle=100*Math.acos((Math.pow(laa,2)+Math.pow(lab,2)-Math.pow(lac,2))/(2*laa*lab));
+            var rightLegAnkleAngle=100*Math.acos((Math.pow(raa,2)+Math.pow(rab,2)-Math.pow(rac,2))/(2*raa*rab));
+            
+            var lha,lhb,lhc;
+            var rha,rhb,rhc;
+            lha=(Math.sqrt(Math.pow(Math.abs(landmarks[11].x-landmarks[13].x),2)+Math.pow(Math.abs(landmarks[11].y-landmarks[13].y),2)));
+            lhb=(Math.sqrt(Math.pow(Math.abs(landmarks[11].x-landmarks[23].x),2)+Math.pow(Math.abs(landmarks[11].y-landmarks[23].y),2)));
+            lhc=(Math.sqrt(Math.pow(Math.abs(landmarks[13].x-landmarks[23].x),2)+Math.pow(Math.abs(landmarks[13].y-landmarks[23].y),2)));
+            
+            rha=(Math.sqrt(Math.pow(Math.abs(landmarks[12].x-landmarks[14].x),2)+Math.pow(Math.abs(landmarks[12].y-landmarks[14].y),2)));
+            rhb=(Math.sqrt(Math.pow(Math.abs(landmarks[12].x-landmarks[24].x),2)+Math.pow(Math.abs(landmarks[12].y-landmarks[24].y),2)));
+            rhc=(Math.sqrt(Math.pow(Math.abs(landmarks[14].x-landmarks[24].x),2)+Math.pow(Math.abs(landmarks[14].y-landmarks[24].y),2)));
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftHandAngle=50*Math.acos((Math.pow(lha,2)+Math.pow(lhb,2)-Math.pow(lhc,2))/(2*lha*lhb));
+            var rightHandAngle=50*Math.acos((Math.pow(rha,2)+Math.pow(rhb,2)-Math.pow(rhc,2))/(2*rha*rhb));
+            
+            console.log(leftHandAngle)
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+          
+            // console.log(b*100)
+          //  console.log(Math.pow(b,2))
+            // console.log(Math.acos((Math.pow(b,2) + Math.pow(c,2) - Math.pow(a,2))/(2*b*c)));
+            
+            // var SlopeOfShoulder=10*Math.abs((landmarks[11].y-landmarks[12].y)/(landmarks[11].x-landmarks[12].x));
+            // var SlopeOfRightThigh=10*Math.abs((landmarks[23].y-landmarks[25].y)/(landmarks[23].x-landmarks[25].x));
+            // var SlopeOfLeftThigh=10*Math.abs((landmarks[26].y-landmarks[24].y)/(landmarks[26].x-landmarks[24].x));
+            // console.log(SlopeOfShoulder)
+          
+             
+          
+          
+          
+              if(Math.abs(leftToey-rightToey)<5
+             && Math.abs(rightAnklex-leftAnklex) > Math.abs(rightShoulderx-leftShoulderx)  && l==0){ //if legs outside shoulders
+          
+              if( (leftLegKneeAngle>70&&leftLegKneeAngle<110) && (leftLegAnkleAngle>80 && leftLegAnkleAngle<120) || 
+                  (rightLegKneeAngle>70&&rightLegKneeAngle<110) && (rightLegAnkleAngle>80 &&rightLegKneeAngle<120)){
+                  l++;
+                }else{
+                  drawConnectors(canvasCtx, landmarks, [[24,26],[26,28],[23,25],[25,27]],
+                  {color: 'red', lineWidth: 10});
+                  console.log('angles not matching');
+                }
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[24,26],[26,28],[23,25],[25,27]],
+                  {color: 'red', lineWidth: 10});
+                console.log("Keep Your Legs Outside Your Shoulder!"); 
+              }
+          
+              // if(Math.abs(leftWristy-leftElbowy)<5 && Math.abs(leftElbowy-leftShouldery)<5 &&rh==0){
+              //   // console.log('RH Ok -=-');
+              //   rh++;
+              // }else{
+              //   console.log("Keep Your Right Hand Straight!");
+              // }
+              // if(Math.abs(rightWristy-rightElbowy)<5 && Math.abs(rightElbowy-rightShouldery)<5 &&lh==0){
+              //   // console.log('LH Ok -=-');
+              //   lh++;
+              // }else{
+              //   console.log("Keep Your Left Hand Straight!");
+              // }
+          
+              if(leftWristy<leftShouldery && rightWristy<rightShouldery  &&rh==0){
+              if((leftHandAngle>150 && leftHandAngle<180) && (rightHandAngle>150 && rightHandAngle<180)){
+                // console.log('RH Ok -=-');
+                rh++;
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[16,14],[14,12],[11,13],[13,15]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Hands at 90deg!");
+              }
+            }else{
+              drawConnectors(canvasCtx, landmarks, [[16,14],[14,12],[11,13],[13,15]],
+                {color: 'red', lineWidth: 10});
+              console.log("Keep Your Hands Up Straight!");
+            }
+          
+           
+              if((rh>0 && l>0)){
+                drawConnectors(canvasCtx, landmarks,POSE_CONNECTIONS,
+                {color: 'green', lineWidth: 4});
+                counterStart();
+              }else{
+                counterEnd();
+              }
+            }
+            function warrior2pose(canvasCtx,landmarks){
+              
+              // Math.abs(results.poseLandmarks[16].x * 100),Math.abs(results.poseLandmarks[16].y * 100),
+              //            Math.abs(results.poseLandmarks[15].x * 100),Math.abs(results.poseLandmarks[15].y*100)
+              
+              var leftWristx=Math.abs(landmarks[16].x * 100);
+              var leftWristy=Math.abs(landmarks[16].y * 100);
+              var rightWristx=Math.abs(landmarks[15].x * 100);
+              var rightWristy=Math.abs(landmarks[15].y * 100);
+              
+              var leftElbowx=Math.abs(landmarks[14].x * 100);
+              var leftElbowy=Math.abs(landmarks[14].y * 100);
+              var rightElbowx=Math.abs(landmarks[13].x * 100);
+              var rightElbowy=Math.abs(landmarks[13].y * 100);
+              
+              var leftToex=Math.abs(landmarks[32].x * 100);
+              var leftToey=Math.abs(landmarks[32].y * 100);
+              var rightToex=Math.abs(landmarks[31].x * 100);
+              var rightToey=Math.abs(landmarks[31].y * 100);
+              var leftAnklex=Math.abs(landmarks[30].x * 100);
+              var leftAnkley=Math.abs(landmarks[30].y * 100);
+              var rightAnklex=Math.abs(landmarks[29].x * 100);
+              var rightAnkley=Math.abs(landmarks[29].y * 100);//leg co-ordinates
+          
+              var leftShoulderx=Math.abs(landmarks[12].x * 100);
+              var leftShouldery=Math.abs(landmarks[12].y * 100);
+              var rightShoulderx=Math.abs(landmarks[11].x * 100);
+              var rightShouldery=Math.abs(landmarks[11].y * 100);
+              var rh=0,lh=0,l=0;
+              
+            // console.log(leftAnklex,leftShoulderx)
+            var lla,llb,llc;
+            var rla,rlb,rlc;
+            lla=(Math.sqrt(Math.pow(Math.abs(landmarks[23].x-landmarks[25].x),2)+Math.pow(Math.abs(landmarks[23].y-landmarks[25].y),2)));
+            llc=(Math.sqrt(Math.pow(Math.abs(landmarks[25].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[25].y-landmarks[27].y),2)));
+            llb=(Math.sqrt(Math.pow(Math.abs(landmarks[23].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[23].y-landmarks[27].y),2)));
+            
+            rla=(Math.sqrt(Math.pow(Math.abs(landmarks[24].x-landmarks[26].x),2)+Math.pow(Math.abs(landmarks[24].y-landmarks[26].y),2)));
+            rlc=(Math.sqrt(Math.pow(Math.abs(landmarks[26].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[26].y-landmarks[28].y),2)));
+            rlb=(Math.sqrt(Math.pow(Math.abs(landmarks[24].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[24].y-landmarks[28].y),2)));
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+            var leftLegKneeAngle=100*Math.acos((Math.pow(lla,2)+Math.pow(llb,2)-Math.pow(llc,2))/(2*lla*llb));
+            var rightLegKneeAngle=100*Math.acos((Math.pow(rla,2)+Math.pow(rlb,2)-Math.pow(rlc,2))/(2*rla*rlb));
+          
+            var laa,lab,lac;
+            var raa,rab,rac;
+            laa=(Math.sqrt(Math.pow(Math.abs(landmarks[25].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[25].y-landmarks[27].y),2)));
+            lac=(Math.sqrt(Math.pow(Math.abs(landmarks[27].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[27].y-landmarks[28].y),2)));
+            lab=(Math.sqrt(Math.pow(Math.abs(landmarks[25].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[25].y-landmarks[28].y),2)));
+            
+            raa=(Math.sqrt(Math.pow(Math.abs(landmarks[26].x-landmarks[28].x),2)+Math.pow(Math.abs(landmarks[26].y-landmarks[28].y),2)));
+            rac=(Math.sqrt(Math.pow(Math.abs(landmarks[28].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[28].y-landmarks[27].y),2)));
+            rab=(Math.sqrt(Math.pow(Math.abs(landmarks[26].x-landmarks[27].x),2)+Math.pow(Math.abs(landmarks[26].y-landmarks[27].y),2)));
+          
+            var leftLegAnkleAngle=100*Math.acos((Math.pow(laa,2)+Math.pow(lab,2)-Math.pow(lac,2))/(2*laa*lab));
+            var rightLegAnkleAngle=100*Math.acos((Math.pow(raa,2)+Math.pow(rab,2)-Math.pow(rac,2))/(2*raa*rab));
+            console.log(leftLegAnkleAngle +'-' + leftLegKneeAngle)
+            // console.log(100*Math.acos((Math.pow(c,2)+Math.pow(a,2)-Math.pow(b,2))/(2*c*a)))
+          
+            // console.log(b*100)
+          //  console.log(Math.pow(b,2))
+            // console.log(Math.acos((Math.pow(b,2) + Math.pow(c,2) - Math.pow(a,2))/(2*b*c)));
+            
+            // var SlopeOfShoulder=10*Math.abs((landmarks[11].y-landmarks[12].y)/(landmarks[11].x-landmarks[12].x));
+            // var SlopeOfRightThigh=10*Math.abs((landmarks[23].y-landmarks[25].y)/(landmarks[23].x-landmarks[25].x));
+            // var SlopeOfLeftThigh=10*Math.abs((landmarks[26].y-landmarks[24].y)/(landmarks[26].x-landmarks[24].x));
+            // console.log(SlopeOfShoulder)
+          
+             
+          
+          
+          
+              if(Math.abs(leftToey-rightToey)<5
+             && Math.abs(rightAnklex-leftAnklex) > Math.abs(rightShoulderx-leftShoulderx)  && l==0){ //if legs outside shoulders
+          
+              if( (leftLegKneeAngle>70&&leftLegKneeAngle<110) && (leftLegAnkleAngle>80 && leftLegAnkleAngle<120) || 
+                  (rightLegKneeAngle>70&&rightLegKneeAngle<110) && (rightLegAnkleAngle>80 &&rightLegKneeAngle<120)){
+                  l++;
+                }else{
+                  drawConnectors(canvasCtx, landmarks, [[24,26],[26,28],[23,25],[25,27]],
+                  {color: 'red', lineWidth: 10});
+                  console.log('angles not matching');
+                }
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[24,26],[26,28],[23,25],[25,27]],
+                  {color: 'red', lineWidth: 10});
+                console.log("Keep Your Legs Straight!"); 
+              }
+          
+              if(Math.abs(leftWristy-leftElbowy)<5 && Math.abs(leftElbowy-leftShouldery)<5 &&rh==0){
+                // console.log('RH Ok -=-');
+                rh++;
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[16,14],[14,12]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Right Hand Straight!");
+              }
+              if(Math.abs(rightWristy-rightElbowy)<5 && Math.abs(rightElbowy-rightShouldery)<5 &&lh==0){
+                // console.log('LH Ok -=-');
+                lh++;
+              }else{
+                drawConnectors(canvasCtx, landmarks, [[11,13],[13,15]],
+                {color: 'red', lineWidth: 10});
+                console.log("Keep Your Left Hand Straight!");
+              }
+          
+              if((rh>0 && lh>0 && l>0)){
+                drawConnectors(canvasCtx, landmarks,POSE_CONNECTIONS,
+                {color: 'green', lineWidth: 10});
+                counterStart();
+              }else{
+                counterEnd();
+              }
+            }
+          
+            function onResults(results) {
+              if (results.poseLandmarks) {
+            // console.log(POSE_CONNECTIONS)
+                
+                canvasCtx.save();
+              canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+              canvasCtx.drawImage(results.segmentationMask, 0, 0,
+              canvasElement.width, canvasElement.height);
+              
+              // Only overwrite existing pixels.
+              canvasCtx.globalCompositeOperation = 'source-in';
+              canvasCtx.fillStyle = 'transparent';
+              canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+              
+              // Only overwrite missing pixels.
+              canvasCtx.globalCompositeOperation = 'destination-atop';
+              canvasCtx.drawImage(
+                results.image, 0, 0, canvasElement.width, canvasElement.height);
+                
+                canvasCtx.globalCompositeOperation = 'source-over';
+                drawConnectors(canvasCtx, results.poseLandmarks,POSE_CONNECTIONS,
+                {color: 'white', lineWidth: 5});
+                // console.log(POSE_CONNECTIONS)
+                // drawLandmarks(canvasCtx, results.poseLandmarks,
+                // {color: '#ffffff7a', lineWidth: 20});
+                // drawLandmarks(canvasCtx, results.poseLandmarks,
+                // {color: 'white', lineWidth: 0.01});
+                
+                // warrior1pose(canvasCtx,results.poseLandmarks);
+                warrior2pose(canvasCtx,results.poseLandmarks);
+                // upwardsalute(canvasCtx,results.poseLandmarks);
+                // starpose(canvasCtx,results.poseLandmarks);
+                // mountainpose(canvasCtx,results.poseLandmarks)
+          
+                // boatpose(canvasCtx,results.poseLandmarks);
+                
+                canvasCtx.restore();
+                
+                grid.updateLandmarks(results.poseWorldLandmarks);
+              }
+              }
+              
+            const pose = new Pose({locateFile: (file) => {
+              return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+            }});
+            pose.setOptions({
+              modelComplexity: 1,
+              smoothLandmarks: true,
+              enableSegmentation: true,
+              smoothSegmentation: true,
+              minDetectionConfidence: 0.9,
+              minTrackingConfidence: 0.9
+            });
+            pose.onResults(onResults);
+            
+            const camera = new Camera(videoElement, {
+              onFrame: async () => {
+                await pose.send({image: videoElement});
+              },
+              width: 1280,
+              height: 720
+            });
+            camera.start();
+            </script>
+    </body>
+</html>
